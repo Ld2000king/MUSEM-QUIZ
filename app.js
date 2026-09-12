@@ -22,3 +22,26 @@ window.addEventListener('appinstalled', () => { installPrompt = null; });
 if ('serviceWorker' in navigator && window.isSecureContext) {
   navigator.serviceWorker.register('./sw.js').catch(() => {});
 }
+// Keep the answer controls reachable when the software keyboard opens.
+const museumShell = document.querySelector('.mobile-app');
+function updateKeyboardLayout() {
+  const viewport = window.visualViewport;
+  const editing = document.activeElement === document.getElementById('answer');
+  const keyboardOpen = Boolean(viewport && editing && window.innerHeight - viewport.height > 120);
+  museumShell.classList.toggle('keyboard-open', keyboardOpen);
+  if (keyboardOpen) {
+    museumShell.style.height = `${viewport.height}px`;
+    document.getElementById('answer').scrollIntoView({block:'nearest'});
+  } else museumShell.style.removeProperty('height');
+}
+window.visualViewport?.addEventListener('resize', updateKeyboardLayout);
+document.getElementById('answer').addEventListener('focus', updateKeyboardLayout);
+document.getElementById('answer').addEventListener('blur', updateKeyboardLayout);
+function updateConnectionStatus() {
+  const badge = document.getElementById('connectionStatus');
+  badge.hidden = navigator.onLine;
+  badge.textContent = navigator.onLine ? '' : 'ללא חיבור';
+}
+window.addEventListener('online', updateConnectionStatus);
+window.addEventListener('offline', updateConnectionStatus);
+updateConnectionStatus();

@@ -78,6 +78,8 @@ function render() {
   $('plaqueTitle').textContent=done?level.city:'עיר שמסתתרת בין התמונות';
   $('plaqueCaption').textContent=done?level.explain:level.kind==='place'?'איזו עיר מחברת בין שני המראות?':'חברו את הרמזים מימין לשמאל';
   $('answerForm').hidden=done;
+  $('continueTour').hidden=!done;
+  $('continueTour').textContent=solved.size===levels.length?'לצפייה באוסף המלא ←':current===levels.length-1?'לחידה שטרם גיליתם ←':'לחדר הבא ←';
   $('feedback').className='';
   $('feedback').textContent=done?(solved.size===levels.length?`האוסף הושלם! כל ${levels.length} הערים התגלו.`:'העיר הזו כבר באוסף שלכם. המשיכו לסייר ←'):'';
   $('answer').value='';
@@ -118,6 +120,7 @@ $('answerForm').addEventListener('submit',event=>{
 });
 $('answer').addEventListener('input',()=>$('answer').removeAttribute('aria-invalid'));
 $('hint').onclick=()=>{$('feedback').className='';$('feedback').textContent=levels[current].hint;};
+$('continueTour').onclick=()=>{if(solved.size===levels.length){showCollection(true);}else if(current<levels.length-1){go(current+1);}else{go(levels.findIndex((_,index)=>!solved.has(index)));}};
 $('prev').onclick=()=>go(current-1);$('next').onclick=()=>go(current+1);
 $('progress').onclick=event=>{const button=event.target.closest('[data-index]');if(button)go(Number(button.dataset.index));};
 $('collectionTab').onclick=()=>{collectionPage=Math.floor(current/WING_SIZE);showCollection(true);};
