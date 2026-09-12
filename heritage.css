@@ -1,0 +1,93 @@
+/* Heritage skin: wood, brass and glass vitrines, chosen over the earlier
+   boutique-blue look. The room's wall and floor are the two colors the
+   player can toggle (see the swatches in the header); everything else
+   (chrome, frames, plaques) stays constant across both. */
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:ital,wght@0,500;1,400&display=swap');
+
+:root{
+  /* dark walnut room (default) */
+  --wood-base:#4d341f;
+  --wood-ceiling:#4a3320;
+  --wood-wall-1:#5c3f29;
+  --wood-wall-2:#8a6038;
+  --wood-wall-3:#8a6038;
+  --wood-wall-4:#5c3f29;
+  --wood-floor-1:#8f5f3b;
+  --wood-floor-2:#c99a63;
+  --wood-cornice:#3a2717;
+  --wood-fixture:#3a2717;
+  --wood-grid:rgba(255,230,190,.22);
+  --wood-glow:rgba(255,242,208,.55);
+  /* brass hardware stays the same in both room themes */
+  --brass-1:#8a6435;
+  --brass-2:#d9ac66;
+}
+:root[data-room-theme="light"]{
+  --wood-base:#e8d2ab;
+  --wood-ceiling:#e0c89a;
+  --wood-wall-1:#b98a52;
+  --wood-wall-2:#e8ce9e;
+  --wood-wall-3:#e8ce9e;
+  --wood-wall-4:#b98a52;
+  --wood-floor-1:#c9a15f;
+  --wood-floor-2:#f0dcb4;
+}
+
+/* room-theme toggle */
+.room-theme-toggle{display:flex;gap:6px;padding:3px;background:#f0e6cd;border:1px solid #cbb27a;border-radius:20px}
+.theme-swatch{width:22px;height:22px;border-radius:50%;border:2px solid transparent;padding:0;background-clip:padding-box;flex:none}
+.theme-swatch.dark{background:linear-gradient(135deg,#8a6038,#5c3f29)}
+.theme-swatch.light{background:linear-gradient(135deg,#f0dcb4,#c9a15f)}
+.theme-swatch[aria-pressed="true"]{border-color:var(--brass-1);box-shadow:0 0 0 2px #f0e6cd,0 0 0 3px var(--brass-1)}
+.theme-swatch:active{transform:none}
+
+/* architecture: let the SVG's own background win over museum.css's cool gradient */
+.architecture{background:var(--wood-base)}
+.gallery-room{background:var(--wood-base);--wing-color:#a9782e}
+
+/* frame moulding + mat: brass instead of the earlier grey-green */
+.frame{background:linear-gradient(112deg,var(--brass-2),var(--brass-1) 55%,var(--brass-2));box-shadow:2px 5px 0 rgba(90,65,25,.28),0 10px 16px rgba(60,45,20,.28),inset 0 0 0 2px rgba(255,240,200,.5)}
+.mat{background:#f6efdd;box-shadow:inset 0 0 0 1px #e8dcc0;position:relative;overflow:hidden}
+.art:not([data-art="head"]) .mat:after{content:'';position:absolute;top:0;left:-40%;width:55%;height:180%;background:linear-gradient(115deg,rgba(255,255,255,0) 40%,rgba(255,255,255,.42) 50%,rgba(255,255,255,0) 60%);transform:rotate(8deg);pointer-events:none}
+.art-zoom{background:linear-gradient(112deg,var(--brass-2),var(--brass-1) 55%,var(--brass-2))}
+.art-zoom .mat{background:#f6efdd}
+.art-zoom:not([data-art="head"]) .mat:after{content:'';position:absolute;top:0;left:-40%;width:55%;height:180%;background:linear-gradient(115deg,rgba(255,255,255,0) 40%,rgba(255,255,255,.42) 50%,rgba(255,255,255,0) 60%);transform:rotate(8deg);pointer-events:none}
+.art-label{background:#f5ecd6}
+
+/* plaque: parchment with a small brass pin */
+.plaque{background:#f0e6cd;border:1px solid #cbb27a;box-shadow:0 5px 12px rgba(60,40,15,.2)}
+.plaque:before{content:'';position:absolute;top:-6px;left:calc(50% - 5px);width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--brass-2),var(--brass-1));box-shadow:0 2px 3px rgba(0,0,0,.3)}
+.plaque>span:first-child{color:#8a6a44}
+.plaque h2{font-family:'Frank Ruhl Libre',Heebo,serif;color:#3a2e1f}
+.plaque>span:last-child{font-family:'Frank Ruhl Libre',Heebo,serif;font-style:italic;color:#6e5636}
+
+/* chrome: warm the whole shell to match, and swap the blue accent for brass */
+header,.bottom-nav,.answer-panel{background:#f8f3e6}
+.bottom-nav{border-color:#cbb27a}
+.bottom-nav .active .nav-icon{background:#eddfc0}
+.room-top>span:first-child,.map-trigger{background:#f8f3e6db;border-color:#cbb27a;color:#5c4126}
+input{background:#fffdf6;border-color:#dcc9a0}
+input:focus{outline-color:#b98a52}
+.primary{background:#7a5230;box-shadow:0 5px 12px rgba(90,60,25,.22)}
+.primary:hover{background:#5c3f22}
+.answer-footer button{color:#a05a2e}
+.brand-icon{color:#5c3f22}
+.brand-icon span{color:#c9a15f}
+.brand>span:last-child{font-family:'Frank Ruhl Libre',Heebo,serif;font-weight:500}
+.brand small{font-family:'Heebo',Arial,sans-serif;font-weight:400}
+.eyebrow{color:#8a6a44}
+h1{font-family:'Frank Ruhl Libre',Heebo,serif;font-weight:500}
+#count{background:#f2d6bc;color:#944520}
+.map-trigger span{color:#5c4126}
+.map-select-label{color:#5c4126}
+#mapWing{background:#fffdf6;border-color:#dcc9a0;color:#5c4126}
+.map-room.here{border-color:var(--brass-1);background:#f5ecd6;color:#5c3f22;box-shadow:0 0 0 2px rgba(138,100,53,.2)}
+.map-room:focus-visible,.map-trigger:focus-visible{outline-color:var(--brass-1)}
+.question-top label{color:#3a2e1f}
+.bottom-nav .active{color:#5c3f22}
+.collection-heading h2{color:#5c3f22}
+.collection-paging button{background:#f0e6cd;color:#8a6435}
+
+@media(max-width:360px){
+  .theme-swatch{width:19px;height:19px}
+}

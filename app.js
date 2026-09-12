@@ -45,3 +45,24 @@ function updateConnectionStatus() {
 window.addEventListener('online', updateConnectionStatus);
 window.addEventListener('offline', updateConnectionStatus);
 updateConnectionStatus();
+// Let the player pick the gallery room's wall and floor: dark walnut or light oak.
+(function () {
+  const THEME_KEY = 'cityMuseum.roomTheme';
+  const darkButton = document.getElementById('themeDark');
+  const lightButton = document.getElementById('themeLight');
+  let theme = 'dark';
+  try {
+    const saved = localStorage.getItem(THEME_KEY);
+    if (saved === 'light' || saved === 'dark') theme = saved;
+  } catch {}
+  function applyRoomTheme(next) {
+    theme = next;
+    document.documentElement.dataset.roomTheme = theme;
+    darkButton?.setAttribute('aria-pressed', String(theme === 'dark'));
+    lightButton?.setAttribute('aria-pressed', String(theme === 'light'));
+    try { localStorage.setItem(THEME_KEY, theme); } catch {}
+  }
+  applyRoomTheme(theme);
+  darkButton?.addEventListener('click', () => applyRoomTheme('dark'));
+  lightButton?.addEventListener('click', () => applyRoomTheme('light'));
+})();
