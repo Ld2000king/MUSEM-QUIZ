@@ -1,0 +1,17 @@
+{
+  "id": "./",
+  "name": "מקום למחשבה — מוזיאון חידות",
+  "short_name": "מקום למחשבה",
+  "description": "גלריה של חידות חזותיות על ערים בישראל. מתבוננים, מחברים ומגלים.",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fafaf8",
+  "theme_color": "#fafaf8",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}

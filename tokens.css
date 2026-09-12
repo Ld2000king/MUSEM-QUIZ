@@ -1,0 +1,147 @@
+/* ============================================================================
+   premium-app-design - starter token block.
+   Drop this at the top of your main stylesheet. Retune the HUE VALUES to fit
+   a new project's brand; keep the STRUCTURE (variable names, the role each
+   one plays) so the rest of the patterns in this skill keep working.
+   ============================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;700;800;900&family=Poppins:wght@300;400;600;700;800&display=swap');
+/* ^ Verified safe for Hebrew/RTL. If your project is Latin-only, most solid
+     rounded display fonts work - just still eyeball-render every weight you
+     actually use before committing (see SKILL.md "fonts that don't cover the
+     script"). */
+
+:root {
+    /* ---- Core accent palette - solid matte tones, NOT bright neon ----
+       Names say "neon" (kept from an earlier design iteration of the source
+       project); the VALUES are flat, deep, desaturated-enough-to-be-premium
+       colors. This is the #1 thing to retune per-project: keep the six
+       roles (cyan/lime/orange/gold/purple/red), change the actual hex. */
+    --neon-cyan: #4E7FD6;
+    --neon-cyan-deep: #3A65B8;
+    --neon-pink: #C24E7A;
+    --neon-magenta: #9C4394;
+    --neon-lime: #147A4A;
+    --neon-lime-deep: #2FBE85;
+    --neon-orange: #A85A1E;
+    --neon-orange-deep: #8F4A16;
+    --neon-gold: #C99A2E;
+    --neon-gold-deep: #A87F22;
+    --neon-purple: #5B4FCF;
+    --neon-purple-deep: #4A3FB0;
+    --neon-red: #B3372E;
+    --neon-red-deep: #952B23;
+
+    /* ---- Semantic role tokens - what each color MEANS in the app ----
+       Keep this mapping consistent across every screen. In the source app:
+       green=primary/play, gold=shop/currency, blue=profile/identity,
+       purple=secondary/social, red=close/exit/danger. */
+    --grad-blue: var(--neon-cyan-deep);
+    --grad-green: var(--neon-lime);
+    --grad-orange: var(--neon-orange);
+    --grad-gold: var(--neon-gold);
+    --grad-purple: var(--neon-purple);
+    --grad-pink: var(--neon-pink);
+    --grad-red: var(--neon-red);
+
+    /* ---- Backgrounds - a flat, matte dark obsidian scale ----
+       Each surface tier is just slightly lighter than the one behind it, so
+       cards read as distinct material layers without needing bright
+       borders. Add more tiers (surface-4, etc.) the same way if you need
+       deeper nesting. */
+    --bg-deep: #121317;
+    --bg-deep-2: #0c0d10;
+    --panel-light: #1C1E24;
+    --surface-2: #262933;
+    --surface-3: #2E313D;
+
+    /* ---- Text ----
+       IMPORTANT naming note: --text-dark is the color you put ON bright/
+       light fills (buttons, badges) - it is dark so it stays legible ON a
+       light background. --text-light is for dark surfaces. This is the
+       #1 accessibility bug this system had before it was fixed - see
+       accessibility.md. */
+    --text-dark: #F1F2F5;
+    --text-secondary: #A6ABB8;
+    --text-light: #ffffff;
+
+    /* ---- Soft accent-tinted shadows ----
+       A gentle color hint, always paired with a neutral depth shadow, so
+       elements get physical elevation instead of a neon halo. */
+    --glow-cyan: 0 8px 22px rgba(58, 101, 184, 0.22), var(--shadow-depth-sm);
+    --glow-green: 0 8px 22px rgba(22, 135, 82, 0.22), var(--shadow-depth-sm);
+    --glow-orange: 0 8px 22px rgba(176, 101, 31, 0.22), var(--shadow-depth-sm);
+    --glow-gold: 0 8px 22px rgba(168, 127, 34, 0.22), var(--shadow-depth-sm);
+    --glow-purple: 0 8px 22px rgba(74, 63, 176, 0.22), var(--shadow-depth-sm);
+    --glow-red: 0 8px 22px rgba(149, 43, 35, 0.22), var(--shadow-depth-sm);
+
+    /* ---- Borders and radii - a considered 3-tier scale ----
+       Compact controls (sm), cards/buttons (card/btn), tiles (tile), and
+       big popups/frames (frame). Don't add ad-hoc radius values elsewhere -
+       pick the nearest tier. */
+    --border-thick: 1px;
+    --radius-sm: 14px;
+    --radius-card: 24px;
+    --radius-btn: 18px;
+    --radius-tile: 16px;
+    --radius-frame: 28px;
+
+    /* ---- Fonts ---- */
+    --font-display: 'Rubik', 'Poppins', sans-serif;
+    --font-body: 'Poppins', sans-serif;
+
+    /* ---- App "device" frame - mobile-first, centered on wide screens ---- */
+    --app-max-width: 460px;
+
+    /* ---- Soft neutral depth shadows - the elevation system ----
+       Use these (not colored glows) for 90% of shadow needs. Colored
+       --glow-* variants are a light accent on top for interactive/branded
+       elements only. */
+    --shadow-depth-sm: 0 8px 20px rgba(0, 0, 0, 0.18);
+    --shadow-depth-md: 0 10px 26px rgba(0, 0, 0, 0.22);
+    --shadow-depth-lg: 0 16px 36px rgba(0, 0, 0, 0.28);
+    --shadow-frame: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255, 255, 255, 0.06) inset;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: var(--font-body);
+    background: var(--bg-deep-2);
+    min-height: 100vh;
+    min-height: 100dvh;
+    color: var(--text-light);
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Remove the 300ms tap delay on every tappable control - critical for the
+   punchy press feedback in patterns.md to feel instant, not laggy */
+button, [role="button"], .clickable {
+    touch-action: manipulation;
+}
+
+/* ---- The mobile-first "device frame" ----
+   Full-bleed on real phones (viewport <= --app-max-width), a centered
+   floating "phone" panel on desktop. This single pattern is what makes the
+   app read as intentional on desktop instead of "a phone page stretched
+   wide" - use it regardless of accent color choices. */
+#app {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100dvh;
+    max-width: var(--app-max-width);
+    margin: 0 auto;
+    background: var(--bg-deep);
+    box-shadow: var(--shadow-frame);
+    border-radius: var(--radius-frame);
+    overflow: hidden;
+}
