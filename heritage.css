@@ -71,8 +71,6 @@ input:focus{outline-color:#b98a52}
 .primary{background:#7a5230;box-shadow:0 5px 12px rgba(90,60,25,.22)}
 .primary:hover{background:#5c3f22}
 .answer-footer button{color:#a05a2e}
-.brand-icon{color:#5c3f22}
-.brand-icon span{color:#c9a15f}
 .brand>span:last-child{font-family:'Frank Ruhl Libre',Heebo,serif;font-weight:500}
 .brand small{font-family:'Heebo',Arial,sans-serif;font-weight:400}
 .eyebrow{color:#8a6a44}
