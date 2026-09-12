@@ -30,3 +30,11 @@
 - [הגנים הבהאיים בחיפה — מפת הגעה](https://assets.bahai.org/2/ganbahai/documentlibrary/he/directions-maps-haifa-driving.pdf)
 - [תיירות טבריה — העיר והאגם](https://www.visit-tiberias.com/index.php?language=heb)
 - [תיירות צפת — רובע האמנים](https://visit.zefat.muni.il/)
+
+## תערוכות ושיתוף
+
+כעת יש 80 מוצגים: 50 ערים בישראל, 10 ערים בארה״ב, 10 זמרים ישראלים ו־10 ספורטאים ישראלים. לכל תערוכה התקדמות נפרדת; שמירות ישנות של תערוכת ישראל עוברות אוטומטית למבנה החדש. `categories.js` מכיל את התוכן הנוסף.
+
+כפתור ״שתף את המוזיאון עם חברים״ משתמש בחלונית השיתוף של המכשיר. כשאינה נתמכת מוצגות אפשרויות וואטסאפ, הודעה והעתקת קישור. הקישור מכיל רק מזהי תערוכות ומספרי החידות שנפתרו. הוא מציג צילום מצב לקריאה בלבד, אינו מעתיק התקדמות למכשיר המקבל ואינו כולל שם או פרטי חשבון. מי שמחזיק בקישור יכול לראות את האוסף המשותף.
+
+מקורות נוספים לבדיקה: [הוועד האולימפי בישראל — מדליסטים](https://www.olympicsil.co.il/en/olympic-medalists/), [NBA — דראפט דני אבדיה](https://www.nba.com/wizards/wizards-continue-build-historic-pick-avdija), [UEFA — מעבר בניון מליברפול לצ׳לסי](https://www.uefa.com/uefachampionsleague/news/01e7-0e74ce5be5ef-a2ac2c49bf51-1000--benayoun-makes-chelsea-switch/).
