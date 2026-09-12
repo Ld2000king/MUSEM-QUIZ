@@ -52,9 +52,10 @@ function isAnswer(value,level) {
   const aliases = level.city === 'תל אביב' ? ['תל אביב יפו'] : [];
   return [level.city,...aliases,...(level.aliases||[])].some(answer=>normalize(value)===normalize(answer));
 }
+function artName(key) { return artLabels[key] || originalLabels[key]; }
 function art(key) {
   const filterId = `texture-${key}-${artSerial++}`;
-  return `<svg viewBox="0 0 260 310" role="img" aria-label="${artLabels[key] || originalLabels[key]}"><defs><filter id="${filterId}"><feTurbulence type="fractalNoise" baseFrequency=".6" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".04"/></feComponentTransfer><feBlend in="SourceGraphic" mode="multiply"/></filter></defs><g filter="url(#${filterId})">${key==='head'?'':'<path fill="#e8e6d5" d="M0 0H260V310H0Z"/>'}${drawings[key]}</g></svg>`;
+  return `<svg viewBox="0 0 260 310" role="img" aria-label="${artName(key)}"><defs><filter id="${filterId}"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".022"/></feComponentTransfer><feBlend in="SourceGraphic" mode="multiply"/></filter></defs><g filter="url(#${filterId})">${key==='head'?'':'<path fill="#e8e6d5" d="M0 0H260V310H0Z"/>'}${drawings[key]}</g></svg>`;
 }
 function renderProgress() {
   const start = Math.max(0,Math.min(current-2,levels.length-5));
@@ -84,7 +85,7 @@ function render() {
   $('answer').removeAttribute('aria-invalid');
   $('roomNumber').textContent=`מוצג ${String(current+1).padStart(2,'0')} מתוך ${levels.length}`;
   $('plaqueNumber').textContent=`${level.kind==='place'?'זיהוי מקום':level.kind==='identity'?'זיהוי לפי רמזים':'חידת מילים'} / ${String(current+1).padStart(3,'0')}`;
-  $('artRow').innerHTML=level.art.map((key,i)=>`${i?`<span class="plus" aria-hidden="true">${level.kind==='place'?'&':'+'}</span>`:''}<div class="art" data-art="${key}"><div class="frame"><div class="mat">${art(key)}</div></div><div class="art-label"><span>פרט ${i?'ב׳':'א׳'} · ${key==='head'?'פסל אבן':'איור על נייר'}</span></div></div>`).join('');
+  $('artRow').innerHTML=level.art.map((key,i)=>`${i?`<span class="plus" aria-hidden="true">${level.kind==='place'?'&':'+'}</span>`:''}<button type="button" class="art" data-art="${key}" data-zoom="${i}" aria-label="הגדלת פרט ${i?'ב׳':'א׳'} · ${artName(key)}"><span class="frame"><span class="mat">${art(key)}</span></span><span class="art-label"><span>פרט ${i?'ב׳':'א׳'} · להגדלה</span><span class="zoom-mark" aria-hidden="true"></span></span></button>`).join('');
   $('exhibition').classList.toggle('success',done);
   $('plaqueTitle').textContent=done?level.city:currentExhibition.subject==='עיר'?'עיר שמסתתרת בין התמונות':'מי מסתתר בין הרמזים?';
   $('plaqueCaption').textContent=done?level.explain:level.kind==='place'?'איזו עיר מחברת בין שני המראות?':level.kind==='identity'?'זהו את השם בעזרת שני הרמזים':'חברו את הרמזים מימין לשמאל';
@@ -119,6 +120,16 @@ function showCollection(show) {
   $('galleryTab').classList.toggle('active',!show);$('collectionTab').classList.toggle('active',show);
   if(show)renderCollection();
 }
+function openArt(index) {
+  const level=levels[current],key=level.art[index],part=index?'ב׳':'א׳';
+  $('artZoomKicker').textContent=`פרט ${part} · מוצג ${String(current+1).padStart(2,'0')} · ${key==='head'?'פסל אבן':'איור על נייר'}`;
+  $('artZoom').dataset.art=key;
+  $('artZoom').innerHTML=`<div class="mat">${art(key)}</div>`;
+  $('artZoomCaption').textContent=solved.has(current)?level.explain:`התבוננו בפרטים. ${level.kind==='place'?'איזו עיר שני המראות האלה מאפיינים?':'מה רואים כאן, ואיך זה מתחבר לפרט השני?'}`;
+  $('artDialog').showModal();
+}
+$('artRow').onclick=event=>{const button=event.target.closest('[data-zoom]');if(button)openArt(Number(button.dataset.zoom));};
+document.querySelectorAll('.close-art').forEach(button=>button.onclick=()=>$('artDialog').close());
 $('answerForm').addEventListener('submit',event=>{
   event.preventDefault();if(solved.has(current))return;
   if(isAnswer($('answer').value,levels[current])) {

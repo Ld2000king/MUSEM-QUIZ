@@ -21,6 +21,14 @@ for(let index=0;index<50;index++) {
  assert.equal((app.node('progress').innerHTML.match(/<button /g)||[]).length,5);
  assert.equal((app.node('museumMap').innerHTML.match(/<button /g)||[]).length,10);
  assert.ok(!app.node('artRow').innerHTML.includes('undefined'),`Missing art/label at ${index+1}`);
+ assert.equal((app.node('artRow').innerHTML.match(/data-zoom="/g)||[]).length,2,`Both artworks open enlarged at ${index+1}`);
+ for(const part of [0,1]) {
+  app.run(`openArt(${part})`);
+  assert.ok(app.node('artZoom').innerHTML.includes('<svg'),`Enlarged artwork at ${index+1}/${part}`);
+  assert.equal(app.node('artZoom').dataset.art,app.run(`levels[${index}].art[${part}]`));
+  assert.ok(app.node('artZoomCaption').textContent.length>10);
+  assert.ok(!app.node('artZoomKicker').textContent.includes('undefined'));
+ }
  assert.ok(app.run(`levels[${index}].hint.length > 15 && levels[${index}].explain.length > 8`));
  assert.equal(app.run(`levels[${index}].art.length`),2);
  assert.ok(app.run(`isAnswer(levels[${index}].city,levels[${index}])`));
@@ -48,7 +56,7 @@ for(let wing=0;wing<5;wing++){
  assert.equal((app.node('collectionGrid').innerHTML.match(/<button /g)||[]).length,10);
  assert.ok(!app.node('collectionGrid').innerHTML.includes('undefined'));
 }
-console.log('PASS: 50 unique cities, all art and hints, all answers, spelling variants, legacy progress, bounds, 5 wings, paginated collection, full completion and reload.');
+console.log('PASS: 50 unique cities, all art and hints, enlarged artwork view, all answers, spelling variants, legacy progress, bounds, 5 wings, paginated collection, full completion and reload.');
 const categories=boot(JSON.stringify({solved:[0,1,2],current:3}));
 assert.equal(categories.run('exhibitions.reduce((sum,item)=>sum+item.levels.length,0)'),80);
 for(const id of ['usa','singers','athletes']) {

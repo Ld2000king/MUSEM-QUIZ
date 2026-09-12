@@ -1,0 +1,80 @@
+/* Clearer artworks: bigger prints on a wider wall, crisper pigments,
+   readable wall labels, and a tap that opens one picture full size. */
+
+/* The back wall was widened in the room drawing, so the prints can grow into it. */
+.exhibition{padding-inline:34px;padding-top:30px}
+.art-row{gap:8px;min-height:0}
+.art{width:calc(50% - 16px);max-width:186px;display:block;padding:0;background:none;border:0;font:inherit;color:inherit;text-align:center;-webkit-appearance:none}
+.art:focus-visible{outline:3px solid #d67e3f;outline-offset:8px}
+.plus{font-size:18px}
+
+/* Less moulding, more picture: a thin frame and a narrow bright mat. */
+.frame{display:block;padding:4px;background:linear-gradient(112deg,#4c524a,#262e2a 52%,#717a70);box-shadow:3px 5px 0 #4b513726,7px 12px 18px #43492d33,0 0 0 1px #5c6152}
+.mat{display:block;padding:5px;background:#fffdf7;box-shadow:inset 0 0 0 1px #e7e1ce}
+.mat svg{display:block;width:100%;height:auto;background:#e8e6d5;filter:saturate(1.16) contrast(1.09);shape-rendering:geometricPrecision}
+
+/* Navigation moves onto the side walls so it never sits on a picture. */
+.arrow{width:31px;height:31px;top:40%}
+.prev{right:1px}
+.next{left:1px}
+.wing-mark{top:50px;right:11%;font-size:26px}
+
+/* Stone sculptures keep their frameless, free-standing look. */
+.art[data-art="head"] .frame{background:none;box-shadow:none;padding:0}
+.art[data-art="head"] .mat{background:none;padding:0;box-shadow:none}
+.art[data-art="head"] .mat svg{background:none;filter:drop-shadow(7px 6px 4px #4b42332e) contrast(1.14) saturate(1.08)}
+
+/* Wall label: actually readable, and it says the picture can be opened. */
+.art-label{display:flex;align-items:center;justify-content:center;gap:6px;width:max-content;max-width:100%;margin:9px auto 0;padding:4px 8px;background:#fbf8ec;border:0;border-inline-start:3px solid var(--wing-color);color:#5c6257;font-size:9px;letter-spacing:.2px;line-height:1.4;box-shadow:1px 2px 4px #33332114}
+.art-label span{font-size:9px}
+.art-label span.zoom-mark{display:block;position:relative;flex:none;width:11px;height:11px;border:1.5px solid var(--wing-color);border-radius:50%}
+.art-label span.zoom-mark:before,.art-label span.zoom-mark:after{content:'';position:absolute;background:var(--wing-color);border-radius:1px}
+.art-label span.zoom-mark:before{top:3.5px;left:2px;right:2px;height:1px}
+.art-label span.zoom-mark:after{top:2px;bottom:2px;left:3.5px;width:1px}
+.art[data-art="head"] .art-label{border:0;border-inline-start:3px solid var(--wing-color);width:max-content;height:auto;margin:9px auto 0;background:#fbf8ec;font-size:9px;transform:none;box-shadow:1px 2px 4px #33332114}
+.art[data-art="head"] .art-label:before{content:none}
+
+/* Enlarged view: one artwork, as large as the screen allows. */
+#artDialog{padding:22px 18px calc(18px + env(safe-area-inset-bottom));text-align:center}
+#artDialog .eyebrow{justify-content:center;font-size:10px;letter-spacing:1.2px}
+.art-zoom{margin:15px auto 0;padding:6px;width:max-content;max-width:100%;background:linear-gradient(112deg,#4c524a,#262e2a 52%,#717a70);box-shadow:0 14px 34px #2b30201f,0 0 0 1px #5c6152}
+.art-zoom .mat{padding:10px}
+.art-zoom svg{width:auto;max-width:100%;height:min(56dvh,400px);background:#e8e6d5;filter:saturate(1.16) contrast(1.09);shape-rendering:geometricPrecision}
+.art-zoom[data-art="head"]{background:none;box-shadow:none;padding:0}
+.art-zoom[data-art="head"] .mat{background:none;padding:0;box-shadow:none}
+.art-zoom[data-art="head"] svg{background:none;filter:drop-shadow(9px 8px 6px #4b423333) contrast(1.14)}
+#artZoomCaption{font-size:13px;line-height:1.7;color:#63705e;margin:16px 0 18px}
+#artDialog .primary{width:100%;min-height:48px;font-size:16px}
+
+@media(max-width:360px){
+ .exhibition{padding-inline:30px;padding-top:32px}
+ .art{width:calc(50% - 14px)}
+ .art-row{gap:7px}
+ .mat{padding:4px}
+ .art-label{padding:3px 6px;gap:4px}
+ .wing-mark{font-size:24px}
+}
+@media(min-width:600px){.exhibition{padding-top:32px}}
+
+/* With the keyboard up the room shrinks, but keep the prints usable. */
+.keyboard-open .art{max-width:124px}
+.keyboard-open .exhibition{padding-top:14px}
+.keyboard-open .art-label{display:none}
+
+/* Short screens: the room itself is short, so drop the bench, bring the
+   plaque down to the floor and keep the prints clear of it. */
+@media(max-height:740px){
+ .exhibition{padding-top:20px}
+ .art-label{display:none}
+ .plaque{bottom:9px}
+ .museum-bench{display:none}
+ .wing-mark{top:42px;font-size:22px}
+}
+@media(max-height:640px){
+ .exhibition{padding-top:14px}
+ .art{max-width:126px}
+ .wing-mark{display:none}
+}
+
+/* Solved: a quiet green mount instead of losing the frame's depth. */
+.success .frame{box-shadow:0 0 0 2px #7ea083,3px 5px 0 #4b513726,7px 12px 18px #43492d2b}
