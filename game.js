@@ -19,31 +19,126 @@ const levels = [
 {city:'בת ים',art:['girl','sea'],hint:'הילדה היא הבת של מישהו. מה רואים בתמונה השנייה?',explain:'בת + ים = בת ים'},
 {city:'תל אביב',art:['hill','spring'],hint:'גבעה קטנה נקראת גם תל. איזו עונה מסמלת הפריחה?',explain:'תל + אביב = תל אביב'}
 ];
-const $=id=>document.getElementById(id);
-let saved={};try{saved=JSON.parse(localStorage.getItem('cityMuseum.v1')||'{}')||{}}catch{}
-const solved=new Set(Array.isArray(saved.solved)?saved.solved.filter(n=>Number.isInteger(n)&&n>=0&&n<levels.length):[]);
-let current=Number.isInteger(saved.current)&&saved.current>=0&&saved.current<levels.length?saved.current:0;
-function persist(){try{localStorage.setItem('cityMuseum.v1',JSON.stringify({solved:[...solved],current}))}catch{$('feedback').textContent+=' ההתקדמות תישמר רק עד סגירת העמוד.'}}
-function art(key){return `<svg viewBox="0 0 260 310" role="img" aria-label="${({house:'בית עם גג אדום',sun:'שמש מעל גבעות',head:'פסל ראש',eye:'עין',well:'באר מים',seven:'שבעה פרחים',hill:'גבעה ירוקה',garden:'גן עם עצים ופרחים',girl:'ילדה',sea:'ים וגלים',spring:'ענף פורח באביב'})[key]}"><defs><filter id="texture-${key}"><feTurbulence type="fractalNoise" baseFrequency=".6" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".04"/></feComponentTransfer><feBlend in="SourceGraphic" mode="multiply"/></filter></defs><g filter="url(#texture-${key})">${key==='head'?'':'<path fill="#e8e6d5" d="M0 0H260V310H0Z"/>'}${drawings[key]}</g></svg>`}
-function render(){const l=levels[current],done=solved.has(current);renderMuseumMap();$('answer').removeAttribute('aria-invalid');$('roomNumber').textContent=`מוצג ${String(current+1).padStart(2,'0')} מתוך 06`;$('plaqueNumber').textContent=`אוסף ישראלי / ${String(current+1).padStart(3,'0')}`;$('artRow').innerHTML=l.art.map((key,i)=>`${i?'<span class="plus" aria-hidden="true">+</span>':''}<div class="art" data-art="${key}"><div class="frame"><div class="mat">${art(key)}</div></div><div class="art-label"><span>פרט ${i?'ב׳':'א׳'} · ${key==='head'?'פסל אבן':'איור על נייר'}</span><span>IL — 0${current+1}</span></div></div>`).join('');$('exhibition').classList.toggle('success',done);$('plaqueTitle').textContent=done?l.city:'עיר שמסתתרת בין התמונות';$('plaqueCaption').textContent=done?l.explain:'התבוננו ברמזים מימין לשמאל וחברו ביניהם';$('answerForm').hidden=done;$('feedback').className='';$('feedback').textContent=done?(solved.size===levels.length?'האוסף הושלם! כל שש הערים התגלו. אפשר לבקר בהן באוסף שלי.':'העיר הזו כבר באוסף שלכם. המשיכו למוצג הבא ←'):'';$('answer').value='';$('hint').disabled=done;$('letterCount').textContent=l.city.split(' ').map(w=>w.length).join(' + ')+' אותיות';$('prev').disabled=current===0;$('next').disabled=current===levels.length-1;$('count').textContent=solved.size;$('progress').innerHTML=levels.map((_,i)=>`<button class="${i===current?'current ':''}${solved.has(i)?'solved':''}" aria-label="מוצג ${i+1}${solved.has(i)?', נפתר':''}" ${i===current?'aria-current="step"':''} data-index="${i}">${solved.has(i)?'✓':i+1}</button>`).join('');}
-function go(n){current=Math.max(0,Math.min(levels.length-1,n));render();persist()}
-function normalize(s){return s.normalize('NFKC').replace(/[\s\-־׳״'"\u0591-\u05C7]/g,'').replace(/[ךםןףץ]/g,c=>({'ך':'כ','ם':'מ','ן':'נ','ף':'פ','ץ':'צ'}[c]))}
-$('answerForm').addEventListener('submit',e=>{e.preventDefault();if(solved.has(current))return;const answer=normalize($('answer').value);if(answer===normalize(levels[current].city)||(current===5&&answer===normalize('תל אביב יפו'))){solved.add(current);render();$('feedback').textContent=solved.size===levels.length?'איזה אוסף! גיליתם את כל שש הערים. האוסף המלא מחכה לכם.':`נכון, ${levels[current].city}! יצירה חדשה נוספה לאוסף שלכם.`;persist();$('next').disabled?$('collectionTab').focus():$('next').focus()}else{$('feedback').className='error';$('feedback').textContent='עוד לא, אבל יש כאן כיוון. הסתכלו שוב על שני הרמזים.';$('answer').setAttribute('aria-invalid','true');$('answer').focus()}});
-$('answer').addEventListener('input',()=>$('answer').removeAttribute('aria-invalid'));
-$('hint').onclick=()=>{$('feedback').className='';$('feedback').textContent=levels[current].hint};$('prev').onclick=()=>go(current-1);$('next').onclick=()=>go(current+1);$('progress').onclick=e=>{const b=e.target.closest('[data-index]');if(b)go(Number(b.dataset.index))};
-function showCollection(show){$('gallery').hidden=show;$('collection').hidden=!show;$('galleryTab').classList.toggle('active',!show);$('collectionTab').classList.toggle('active',show);if(show)$('collectionGrid').innerHTML=levels.map((l,i)=>`<button class="collection-card ${solved.has(i)?'':'locked'}" data-index="${i}">${solved.has(i)?art(l.art[0]):'<div class="locked-art">?</div>'}<h3>${solved.has(i)?l.city:`מוצג ${String(i+1).padStart(2,'0')}`}</h3><p>${solved.has(i)?'נוסף לאוסף · לצפייה במוצג':'העיר הבאה מחכה להתגלות'}</p></button>`).join('')}
-$('collectionTab').onclick=()=>showCollection(true);$('galleryTab').onclick=$('returnGallery').onclick=()=>showCollection(false);$('collectionGrid').onclick=e=>{const b=e.target.closest('[data-index]');if(b){go(Number(b.dataset.index));showCollection(false)}};
-$('help').onclick=()=>$('helpDialog').showModal();document.querySelectorAll('.close,.close-help').forEach(b=>b.onclick=()=>$('helpDialog').close());
 
-function renderMuseumMap(){
- const wings=['אגף האור','אגף הטבע','אגף הים'];
- document.querySelector('.gallery-room').dataset.wing=Math.floor(current/2);
- document.querySelector('.wing-mark').textContent=String(current+1).padStart(2,'0');
- $('wingLabel').textContent=wings[Math.floor(current/2)];
- $('museumMap').innerHTML=levels.map((level,index)=>'<button class="map-room '+(index===current?'here ':'')+(solved.has(index)?'discovered':'')+'" data-room="'+index+'" aria-label="חדר '+(index+1)+(solved.has(index)?', '+level.city:'')+'" '+(index===current?'aria-current="location"':'')+'><span class="map-number">'+String(index+1).padStart(2,'0')+'</span><span>'+(solved.has(index)?level.city:'עיר לגלות')+'</span><small>'+(solved.has(index)?'✓ התגלתה':index===current?'● אתם כאן':wings[Math.floor(index/2)])+'</small></button>').join('');
+Object.assign(drawings, extraDrawings);
+levels.push(...extraLevels);
+const $ = id => document.getElementById(id);
+const WING_SIZE = 10;
+const wings = ['אגף הגילוי','אגף האור','אגף המילים','אגף השמות','אגף הנופים'];
+let saved = {};
+try { saved = JSON.parse(localStorage.getItem('cityMuseum.v1') || '{}') || {}; } catch {}
+const solved = new Set(Array.isArray(saved.solved) ? saved.solved.filter(n => Number.isInteger(n) && n >= 0 && n < levels.length) : []);
+let current = Number.isInteger(saved.current) && saved.current >= 0 && saved.current < levels.length ? saved.current : 0;
+let collectionPage = 0;
+let artSerial = 0;
+const originalLabels = {house:'בית עם גג אדום',sun:'שמש מעל גבעות',head:'פסל ראש',eye:'עין',well:'באר מים',seven:'שבעה פרחים',hill:'גבעה ירוקה',garden:'גן עם עצים ופרחים',girl:'ילדה',sea:'ים וגלים',spring:'ענף פורח באביב'};
+function persist() {
+  try { localStorage.setItem('cityMuseum.v1', JSON.stringify({solved:[...solved],current})); }
+  catch { $('feedback').textContent += ' ההתקדמות תישמר רק עד סגירת העמוד.'; }
 }
-$('openMap').onclick=()=>$('mapDialog').showModal();
+function normalize(value) {
+  return value.normalize('NFKC').replace(/[\s\-־׳״'"\u0591-\u05C7]/g,'')
+    .replace(/^קריית/,'קרית').replace(/תקוה/g,'תקווה')
+    .replace(/[ךםןףץ]/g,c=>({'ך':'כ','ם':'מ','ן':'נ','ף':'פ','ץ':'צ'}[c]));
+}
+function isAnswer(value,level) {
+  const aliases = level.city === 'תל אביב' ? ['תל אביב יפו'] : [];
+  return [level.city,...aliases].some(answer=>normalize(value)===normalize(answer));
+}
+function art(key) {
+  const filterId = `texture-${key}-${artSerial++}`;
+  return `<svg viewBox="0 0 260 310" role="img" aria-label="${artLabels[key] || originalLabels[key]}"><defs><filter id="${filterId}"><feTurbulence type="fractalNoise" baseFrequency=".6" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".04"/></feComponentTransfer><feBlend in="SourceGraphic" mode="multiply"/></filter></defs><g filter="url(#${filterId})">${key==='head'?'':'<path fill="#e8e6d5" d="M0 0H260V310H0Z"/>'}${drawings[key]}</g></svg>`;
+}
+function renderProgress() {
+  const start = Math.max(0,Math.min(current-2,levels.length-5));
+  $('progress').innerHTML = levels.slice(start,start+5).map((_,offset)=>{
+    const i=start+offset;
+    return `<button class="${i===current?'current ':''}${solved.has(i)?'solved':''}" aria-label="מוצג ${i+1}${solved.has(i)?', נפתר':''}" ${i===current?'aria-current="step"':''} data-index="${i}">${solved.has(i)?'✓':i+1}</button>`;
+  }).join('');
+}
+function renderMuseumMap(wing=Math.floor(current/WING_SIZE)) {
+  $('mapWing').value=String(wing);
+  const start=wing*WING_SIZE;
+  $('museumMap').innerHTML=levels.slice(start,start+WING_SIZE).map((level,offset)=>{
+    const index=start+offset;
+    return `<button class="map-room ${index===current?'here ':''}${solved.has(index)?'discovered':''}" data-room="${index}" aria-label="חדר ${index+1}${solved.has(index)?', '+level.city:''}" ${index===current?'aria-current="location"':''}><span class="map-number">${String(index+1).padStart(2,'0')}</span><span>${solved.has(index)?level.city:'עיר לגלות'}</span><small>${solved.has(index)?'✓ התגלתה':index===current?'● אתם כאן':level.kind==='place'?'זיהוי מקום':'חידת מילים'}</small></button>`;
+  }).join('');
+}
+function render() {
+  const level=levels[current],done=solved.has(current),wing=Math.floor(current/WING_SIZE);
+  document.querySelector('.gallery-room').dataset.wing=wing%3;
+  document.querySelector('.wing-mark').textContent=String(current+1).padStart(2,'0');
+  $('wingLabel').textContent=wings[wing];
+  renderMuseumMap();
+  $('answer').removeAttribute('aria-invalid');
+  $('roomNumber').textContent=`מוצג ${String(current+1).padStart(2,'0')} מתוך ${levels.length}`;
+  $('plaqueNumber').textContent=`${level.kind==='place'?'זיהוי מקום':'חידת מילים'} / ${String(current+1).padStart(3,'0')}`;
+  $('artRow').innerHTML=level.art.map((key,i)=>`${i?`<span class="plus" aria-hidden="true">${level.kind==='place'?'&':'+'}</span>`:''}<div class="art" data-art="${key}"><div class="frame"><div class="mat">${art(key)}</div></div><div class="art-label"><span>פרט ${i?'ב׳':'א׳'} · ${key==='head'?'פסל אבן':'איור על נייר'}</span></div></div>`).join('');
+  $('exhibition').classList.toggle('success',done);
+  $('plaqueTitle').textContent=done?level.city:'עיר שמסתתרת בין התמונות';
+  $('plaqueCaption').textContent=done?level.explain:level.kind==='place'?'איזו עיר מחברת בין שני המראות?':'חברו את הרמזים מימין לשמאל';
+  $('answerForm').hidden=done;
+  $('feedback').className='';
+  $('feedback').textContent=done?(solved.size===levels.length?`האוסף הושלם! כל ${levels.length} הערים התגלו.`:'העיר הזו כבר באוסף שלכם. המשיכו לסייר ←'):'';
+  $('answer').value='';
+  $('hint').disabled=done;
+  $('letterCount').textContent=level.city.split(' ').map(w=>w.length).join(' + ')+' אותיות';
+  $('prev').disabled=current===0;
+  $('next').disabled=current===levels.length-1;
+  $('count').textContent=solved.size;
+  renderProgress();
+}
+function go(index) { current=Math.max(0,Math.min(levels.length-1,index));render();persist(); }
+function renderCollection() {
+  const pages=Math.ceil(levels.length/WING_SIZE),start=collectionPage*WING_SIZE;
+  $('collectionSummary').textContent=`${solved.size} מתוך ${levels.length} ערים באוסף`;
+  $('collectionGrid').innerHTML=levels.slice(start,start+WING_SIZE).map((level,offset)=>{
+    const index=start+offset;
+    return `<button class="collection-card ${solved.has(index)?'':'locked'}" data-index="${index}">${solved.has(index)?art(level.art[0]):'<div class="locked-art">?</div>'}<h3>${solved.has(index)?level.city:`מוצג ${String(index+1).padStart(2,'0')}`}</h3><p>${solved.has(index)?'נוסף לאוסף · לצפייה במוצג':'העיר הבאה מחכה להתגלות'}</p></button>`;
+  }).join('');
+  $('collectionPage').textContent=`אגף ${collectionPage+1} מתוך ${pages}`;
+  $('collectionPrev').disabled=collectionPage===0;
+  $('collectionNext').disabled=collectionPage===pages-1;
+}
+function showCollection(show) {
+  $('gallery').hidden=show;$('collection').hidden=!show;
+  $('galleryTab').classList.toggle('active',!show);$('collectionTab').classList.toggle('active',show);
+  if(show)renderCollection();
+}
+$('answerForm').addEventListener('submit',event=>{
+  event.preventDefault();if(solved.has(current))return;
+  if(isAnswer($('answer').value,levels[current])) {
+    solved.add(current);render();
+    $('feedback').textContent=solved.size===levels.length?`איזה אוסף! גיליתם את כל ${levels.length} הערים.`:`נכון, ${levels[current].city}! נוספה לאוסף שלכם (${solved.size}/${levels.length}).`;
+    persist();$('next').disabled?$('collectionTab').focus():$('next').focus();
+  } else {
+    $('feedback').className='error';$('feedback').textContent='עוד לא. נסו שוב או בקשו רמז מהאוצר.';
+    $('answer').setAttribute('aria-invalid','true');$('answer').focus();
+  }
+});
+$('answer').addEventListener('input',()=>$('answer').removeAttribute('aria-invalid'));
+$('hint').onclick=()=>{$('feedback').className='';$('feedback').textContent=levels[current].hint;};
+$('prev').onclick=()=>go(current-1);$('next').onclick=()=>go(current+1);
+$('progress').onclick=event=>{const button=event.target.closest('[data-index]');if(button)go(Number(button.dataset.index));};
+$('collectionTab').onclick=()=>{collectionPage=Math.floor(current/WING_SIZE);showCollection(true);};
+$('galleryTab').onclick=$('returnGallery').onclick=()=>showCollection(false);
+$('collectionGrid').onclick=event=>{const button=event.target.closest('[data-index]');if(button){go(Number(button.dataset.index));showCollection(false);}};
+$('collectionPrev').onclick=()=>{collectionPage=Math.max(0,collectionPage-1);renderCollection();$('collectionSummary').scrollIntoView({block:'start'});};
+$('collectionNext').onclick=()=>{collectionPage=Math.min(Math.ceil(levels.length/WING_SIZE)-1,collectionPage+1);renderCollection();$('collectionSummary').scrollIntoView({block:'start'});};
+$('mapWing').innerHTML=wings.map((name,index)=>`<option value="${index}">${name} · ${index*10+1}–${Math.min((index+1)*10,levels.length)}</option>`).join('');
+$('mapWing').onchange=()=>renderMuseumMap(Number($('mapWing').value));
+$('openMap').onclick=()=>{renderMuseumMap();$('mapDialog').showModal();$('mapDialog').scrollTop=0;};
 document.querySelector('.close-map').onclick=()=>$('mapDialog').close();
 $('museumMap').onclick=event=>{const button=event.target.closest('[data-room]');if(button){go(Number(button.dataset.room));$('mapDialog').close();}};
-
-let touchStart=null;$('exhibition').addEventListener('touchstart',e=>{touchStart={x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY}},{passive:true});$('exhibition').addEventListener('touchend',e=>{if(!touchStart)return;const dx=e.changedTouches[0].clientX-touchStart.x,dy=e.changedTouches[0].clientY-touchStart.y;if(Math.abs(dx)>65&&Math.abs(dx)>Math.abs(dy)*1.5)go(current+(dx>0?1:-1));touchStart=null},{passive:true});render();
+$('help').onclick=()=>$('helpDialog').showModal();
+document.querySelectorAll('.close-help,#helpDialog .close').forEach(button=>button.onclick=()=>$('helpDialog').close());
+let touchStart=null;
+$('exhibition').addEventListener('touchstart',event=>{touchStart={x:event.changedTouches[0].clientX,y:event.changedTouches[0].clientY};},{passive:true});
+$('exhibition').addEventListener('touchend',event=>{
+  if(!touchStart)return;
+  const dx=event.changedTouches[0].clientX-touchStart.x,dy=event.changedTouches[0].clientY-touchStart.y;
+  if(Math.abs(dx)>65&&Math.abs(dx)>Math.abs(dy)*1.5)go(current+(dx>0?1:-1));
+  touchStart=null;
+},{passive:true});
+$('exhibition').addEventListener('touchcancel',()=>{touchStart=null;},{passive:true});
+render();

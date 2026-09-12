@@ -1,5 +1,5 @@
-const CACHE = 'city-museum-rooms-v2';
-const ASSETS = ['./', './index.html', './style.css', './museum.css', './game.js', './app.js', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
+const CACHE = 'city-museum-50-v3';
+const ASSETS = ['./', './index.html', './style.css', './museum.css', './game.js', './levels.js', './app.js', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
