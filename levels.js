@@ -26,12 +26,33 @@ exhibit('fire','להבות אש',ground+'<path fill="#d8592c" d="M132 52Q151 117
 person('uncle','דוד: האח של אבא','#684d37','#dcb694','<text x="130" y="258" font-family="Arial" font-size="20" text-anchor="middle" fill="white">האח של אבא</text>');
 person('grandfather','סבא עם שיער לבן ומשקפיים','#e8e5d9','#e8e5d9','<g fill="none" stroke="#675c49" stroke-width="3"><circle cx="111" cy="142" r="13"/><circle cx="149" cy="142" r="13"/><path d="M124 142H136"/></g>');
 person('rabbi','חכם עם ספר','#685c49','#e5dfcb','<path fill="#d6b674" stroke="#735a38" stroke-width="3" d="M82 240Q108 228 130 240Q150 228 178 240V278Q151 266 130 278Q105 266 82 278Z"/>');
-person('prophet','נביא אוחז מגילה','#c4a77c','#b5a38d',
- '<path stroke="#7a6244" stroke-width="6" stroke-linecap="round" d="M212 148v138"/>'
- +'<path fill="#efe0b6" d="M76 214h108v56H76z"/>'
- +'<g fill="#9c7a4d"><rect x="64" y="206" width="16" height="72" rx="8"/><rect x="180" y="206" width="16" height="72" rx="8"/></g>'
- +'<g fill="#b08c58"><rect x="67" y="209" width="10" height="66" rx="5"/><rect x="183" y="209" width="10" height="66" rx="5"/></g>'
- +'<g stroke="#a08a5c" stroke-width="3" stroke-linecap="round"><path d="M96 230h68M96 242h50M96 254h64"/></g>');
+exhibit('prophet','נביא זקן עם זקן לבן ארוך, מגילה ומטה',ground
+ +'<path stroke="#7a6244" stroke-width="7" stroke-linecap="round" d="M230 296V126q0-14 11-18"/>'
+ +'<path fill="#3f6480" d="M58 300q6-58 36-78 14 12 36 12t36-12q30 20 36 78z"/>'
+ +'<g stroke="#35566e" stroke-width="3" stroke-linecap="round"><path d="M84 242l-6 58M176 242l6 58"/></g>'
+ +'<path fill="#a8623f" d="M72 248q58 16 116 0v15q-58 16-116 0z"/>'
+ +'<path fill="#b8ae96" d="M99 92q-17 7-19 32-2 23 4 42 4 13 13 15-11-29-7-58 2-19 9-31z"/>'
+ +'<path fill="#b8ae96" d="M161 92q17 7 19 32 2 23-4 42-4 13-13 15 11-29 7-58-2-19-9-31z"/>'
+ +'<ellipse fill="#dcb694" cx="130" cy="120" rx="36" ry="42"/>'
+ +'<path fill="#cba382" d="M94 120c0-24 16-43 36-43s36 19 36 43c2-33-14-52-36-52s-38 19-36 52z"/>'
+ +'<path fill="#c4bba4" d="M130 62c-24 0-39 15-41 37 9-16 22-23 41-23s32 7 41 23c-2-22-17-37-41-37z"/>'
+ +'<path fill="#a8623f" d="M96 94q34-15 68 0l-3 14q-31-13-62 0z"/>'
+ +'<path fill="#8f4f33" d="M96 94q34-15 68 0l-1 4q-33-13-66 0z"/>'
+ +'<g fill="#fdf8ec"><ellipse cx="115" cy="124" rx="8.5" ry="5.5"/><ellipse cx="145" cy="124" rx="8.5" ry="5.5"/></g>'
+ +'<g fill="#3a352b"><circle cx="116" cy="124" r="3.6"/><circle cx="144" cy="124" r="3.6"/></g>'
+ +'<g stroke="#9c8360" stroke-width="4" stroke-linecap="round" fill="none"><path d="M105 112q10-6 19-2M155 112q-10-6-19-2"/></g>'
+ +'<path fill="none" stroke="#c09a74" stroke-width="3" stroke-linecap="round" d="M130 131q7 11 1 15"/>'
+ +'<path fill="#c9bfa8" d="M95 132c-5 27-3 52 9 71 8 15 17 24 26 28 9-4 18-13 26-28 12-19 14-44 9-71-9 25-21 37-35 37s-26-12-35-37z"/>'
+ +'<path fill="#e4dac5" d="M103 143c-4 22-2 43 6 58 6 13 15 22 21 25 6-3 15-12 21-25 8-15 10-36 6-58-7 20-17 29-27 29s-20-9-27-29z"/>'
+ +'<path fill="#d5cab3" d="M111 147q19 9 38 0-9 12-19 12t-19-12z"/>'
+ +'<g stroke="#bdb29a" stroke-width="2" stroke-linecap="round"><path d="M119 176v32M141 176v32M130 184v30"/></g>'
+ +'<g fill="#9c7a4d"><rect x="52" y="230" width="15" height="56" rx="7.5"/><rect x="193" y="230" width="15" height="56" rx="7.5"/></g>'
+ +'<g fill="#b08c58"><rect x="55" y="233" width="9" height="50" rx="4.5"/><rect x="196" y="233" width="9" height="50" rx="4.5"/></g>'
+ +'<path fill="#f2e6c4" d="M67 238q63-11 126 0v40q-63 11-126 0z"/>'
+ +'<path fill="#e6d8b2" d="M67 238q63-11 126 0v5q-63 11-126 0z"/>'
+ +'<g stroke="#a08a5c" stroke-width="3" stroke-linecap="round"><path d="M86 253h88M90 264h60M86 274h80"/></g>'
+ +'<g fill="#dcb694"><path d="M48 246q19-7 26 5 3 11-10 14-18 1-21-8z"/><path d="M212 246q-19-7-26 5-3 11 10 14 18 1 21-8z"/></g>'
+ +'<g stroke="#c9a07f" stroke-width="2" stroke-linecap="round"><path d="M56 252l14-2M60 259l13-2M204 252l-14-2M200 259l-13-2"/></g>');
 person('herzl','דיוקן סמלי של הרצל עם זקן שחור','#343b35','#343b35');
 exhibit('village','כפר עם בתים קטנים',ground+[25,99,173].map((x,i)=>`<path fill="#e5d3a6" d="M${x} ${170-i%2*30}h60v72h-60Z"/><path fill="#bd603a" d="M${x-8} ${170-i%2*30}l38-37 38 37Z"/><path fill="#61868c" d="M${x+22} ${204-i%2*30}h17v38h-17Z"/>`).join(''));
 exhibit('city','קריה ובה בניינים',ground+[35,98,166].map((x,i)=>`<path fill="${['#6b91a9','#d1ac76','#a8b293'][i]}" d="M${x} ${110+i%2*34}h55v140h-55Z"/>${[0,1,2].map(y=>`<path fill="#f7edcf" d="M${x+10} ${125+i%2*34+y*32}h10v17h-10ZM${x+33} ${125+i%2*34+y*32}h10v17h-10Z"/>`).join('')}`).join(''));
