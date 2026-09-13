@@ -65,15 +65,31 @@ exhibit('silver','מדליית כסף','<path fill="#5d82a1" d="M72 42H111L150 1
 exhibit('windsurf','גלשן רוח','<path fill="#6ca3b6" d="M0 249H260V310H0Z"/><ellipse fill="#cf8a4c" cx="133" cy="248" rx="99" ry="9"/><path stroke="#546e7a" stroke-width="5" d="M128 244V40"/><path fill="#cd6f50" d="M131 44L225 216H131Z"/><path fill="#ecd08d" d="M125 71L52 205H125Z"/>');
 exhibit('ribbon','מתעמלת עם סרט מתעופף',
  '<path fill="#a5b59c" d="M0 268q130-24 260 4v38H0z"/>'
+ +'<path fill="#4a3b2e" d="M80 104c-11 0-18 7-17 19 0 6-1 10-2 12h38c-1-2-2-6-2-12 1-12-6-19-17-19z"/>'
  +'<circle fill="#d9b391" cx="80" cy="128" r="17"/>'
- +'<path fill="#4a3b2e" d="M63 124q3-20 17-20 15 0 17 20-8-8-17-8t-17 8z"/>'
- +'<circle fill="#4a3b2e" cx="64" cy="116" r="8"/>'
+ +'<path fill="#4a3b2e" d="M63 124c0-11 7-18 17-18s17 7 17 18c2-14-7-22-17-22s-19 8-17 22z"/>'
+ +'<circle fill="#4a3b2e" cx="64" cy="114" r="8"/>'
+ +'<g fill="#fdf8ec"><ellipse cx="75" cy="128" rx="5" ry="3.6"/><ellipse cx="88" cy="128" rx="5" ry="3.6"/></g>'
+ +'<g fill="#3a352b"><circle cx="76" cy="128" r="2.2"/><circle cx="87" cy="128" r="2.2"/></g>'
+ +'<path fill="none" stroke="#b3805f" stroke-width="2" stroke-linecap="round" d="M77 138q5 4 10 0"/>'
  +'<path fill="#c2547f" d="M68 148h24l6 54H62z"/>'
  +'<g stroke="#d9b391" stroke-width="8" stroke-linecap="round"><path d="M90 156l32-24M70 158L44 178"/></g>'
  +'<g stroke="#d9b391" stroke-width="9" stroke-linecap="round"><path d="M74 202v62M90 204l40 34"/></g>'
  +'<path stroke="#7a6244" stroke-width="4" stroke-linecap="round" d="M120 134l16-12"/>'
  +'<path fill="none" stroke="#d4589a" stroke-width="7" stroke-linecap="round" d="M136 122q44-20 66 12 18 30-12 42-28 10-26-16 2-24 32-20 34 4 34 42 0 38-46 44"/>');
-exhibit('gymfloor','משטח התעמלות קרקע','<path fill="#95b8bf" stroke="#f4e9cf" stroke-width="10" d="M42 152H217L246 269H13Z"/><circle fill="#d1ac8d" cx="135" cy="64" r="14"/><path stroke="#4c7192" stroke-width="11" fill="none" stroke-linecap="round" d="M133 86L124 149L80 189M124 149L175 187M130 99L81 79M130 99L178 78"/>');
+exhibit('gymfloor','מתעמל בתרגיל קרקע על משטח',
+ '<path fill="#95b8bf" stroke="#f4e9cf" stroke-width="10" d="M30 168h200l30 118H0z"/>'
+ +'<path fill="none" stroke="#7fa7af" stroke-width="3" d="M44 196h172M36 226h188M26 256h208"/>'
+ +'<path fill="#3f6d96" d="M118 120h24l6 56h-36z"/>'
+ +'<path stroke="#d1ac8d" stroke-width="10" stroke-linecap="round" d="M122 128L86 92M138 128l36-36"/>'
+ +'<path stroke="#d1ac8d" stroke-width="11" stroke-linecap="round" d="M124 174l-10 62M136 174l10 62"/>'
+ +'<g fill="#c2543f"><ellipse cx="112" cy="240" rx="11" ry="6"/><ellipse cx="148" cy="240" rx="11" ry="6"/></g>'
+ +'<path fill="#4a3b2e" d="M130 76c-12 0-20 9-19 21 0 6-1 9-2 12h42c-1-3-2-6-2-12 1-12-7-21-19-21z"/>'
+ +'<circle fill="#d1ac8d" cx="130" cy="96" r="18"/>'
+ +'<path fill="#4a3b2e" d="M112 92c0-11 8-18 18-18s18 7 18 18c1-14-8-22-18-22s-19 8-18 22z"/>'
+ +'<g fill="#fdf8ec"><ellipse cx="123" cy="97" rx="5" ry="3.6"/><ellipse cx="137" cy="97" rx="5" ry="3.6"/></g>'
+ +'<g fill="#3a352b"><circle cx="124" cy="97" r="2.2"/><circle cx="136" cy="97" r="2.2"/></g>'
+ +'<path fill="none" stroke="#b3805f" stroke-width="2" stroke-linecap="round" d="M125 106q5 4 10 0"/>');
 exhibit('tennis','מחבט וכדור טניס','<ellipse fill="#d0dccf" stroke="#557c92" stroke-width="9" transform="rotate(25 149 117)" cx="149" cy="117" rx="53" ry="74"/><path stroke="#566f7d" stroke-width="13" d="M123 179L74 275"/><path stroke="#9faf9e" stroke-width="2" d="M115 65L161 184M139 49L185 167M94 113L188 80M107 147L201 114"/><circle fill="#b7c86c" cx="202" cy="249" r="25"/>');
 exhibit('football','כדורגל','<circle fill="#efe8d6" stroke="#86928a" stroke-width="4" cx="130" cy="162" r="87"/><path fill="#4a6070" d="M130 128L159 149L149 184H111L101 149ZM58 125L83 102L93 120L77 147ZM197 125L176 100L166 118L183 147ZM80 216L104 215L111 240L90 238ZM179 216L154 215L148 240L169 238Z"/>');
 exhibit('basketball','כדורסל','<circle fill="#ce8b48" stroke="#665d48" stroke-width="4" cx="130" cy="163" r="86"/><g stroke="#665d48" stroke-width="4" fill="none"><path d="M44 163H216M130 77V249M75 100Q173 162 75 226M185 100Q88 162 185 226"/></g>');

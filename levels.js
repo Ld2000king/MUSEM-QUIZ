@@ -4,7 +4,22 @@ const extraDrawings = {};
 function exhibit(key,label,body){artLabels[key]=label;extraDrawings[key]=body;}
 const ground='<path fill="#a5b59c" d="M0 260Q130 230 260 260V310H0Z"/>';
 function inscription(key,text,label=text){exhibit(key,label,`<rect x="35" y="65" width="190" height="180" rx="3" fill="#f7f0df" stroke="#bba176" stroke-width="3"/><text x="130" y="170" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="${text.length>4?27:65}" fill="#345579">${text}</text><path stroke="#c78b51" stroke-width="3" d="M80 211H180"/>`);}
-function person(key,label,hat,beard,extra=''){exhibit(key,label,ground+`<path fill="#426783" d="M55 286V240Q65 192 130 192T205 240V286Z"/><ellipse fill="#dcb694" cx="130" cy="143" rx="43" ry="55"/><path fill="${beard}" d="M89 153Q130 184 171 153L161 197L130 214L99 197Z"/><path fill="${hat}" d="M81 106Q83 51 132 63Q178 63 179 106Z"/><circle cx="113" cy="141" r="3" fill="#494e45"/><circle cx="147" cy="141" r="3" fill="#494e45"/>${extra}`);}
+function person(key,label,hat,beard,extra=''){exhibit(key,label,ground
++`<path fill="#c9a07f" d="M114 168h32v40h-32z"/>`
++`<path fill="#426783" d="M48 300q7-62 42-80 15 14 40 14t40-14q35 18 42 80z"/>`
++`<path fill="#375873" d="M106 214q24 18 48 0l-12 26h-24z"/>`
++`<path fill="${hat}" d="M130 48c-31 0-50 23-48 54 1 19-2 31-6 42h108c-4-11-7-23-6-42 2-31-17-54-48-54z"/>`
++`<ellipse fill="#dcb694" cx="130" cy="130" rx="38" ry="44"/>`
++`<g fill="#cba382"><ellipse cx="93" cy="138" rx="7" ry="11"/><ellipse cx="167" cy="138" rx="7" ry="11"/></g>`
++`<path fill="${beard}" d="M93 126q0 32 13 46 11 12 24 12t24-12q13-14 13-46q-9 25-37 25t-37-25z"/>`
++`<path fill="none" stroke="#b3805f" stroke-width="3" stroke-linecap="round" d="M120 159q10 7 20 0"/>`
++`<path fill="${beard}" d="M111 143q19 9 38 0-9 12-19 12t-19-12z"/>`
++`<path fill="${hat}" d="M95 114c1-26 16-40 35-40s34 14 35 40c3-32-14-48-35-48s-38 16-35 48z"/>`
++`<g fill="#fdf8ec"><ellipse cx="113" cy="130" rx="8.5" ry="5.5"/><ellipse cx="147" cy="130" rx="8.5" ry="5.5"/></g>`
++`<g fill="#3a352b"><circle cx="114" cy="130" r="3.5"/><circle cx="146" cy="130" r="3.5"/></g>`
++`<g stroke="${hat}" stroke-width="4" stroke-linecap="round" fill="none"><path d="M103 118q10-6 19-2M157 118q-10-6-19-2"/></g>`
++`<path fill="none" stroke="#c09a74" stroke-width="3" stroke-linecap="round" d="M130 135q6 11 1 15"/>`
++extra);}
 inscription('suffixOn','ון','האותיות ון');inscription('letterT','ת','האות ת');inscription('letterH','ה','האות ה');inscription('suffixYa','יה','האותיות יה');inscription('suffixEl','אל','האותיות אל');inscription('tarshiha','תרשיחא','שלט תרשיחא');
 exhibit('sand','דיונות חול',`<circle cx="193" cy="71" r="30" fill="#e7a243"/><path fill="#e3bc78" d="M0 210Q70 91 167 185T260 171V310H0Z"/><path fill="#c99653" d="M0 251Q160 128 260 249V310H0Z"/><path fill="#f1d19c" d="M0 279Q150 226 260 273V310H0Z"/>`);
 exhibit('ram','איל עם קרניים מסולסלות',ground
@@ -24,8 +39,13 @@ exhibit('ram','איל עם קרניים מסולסלות',ground
 exhibit('room','חדר עם כורסה וחלון','<path fill="#f2e9d4" d="M25 55H235V270H25Z"/><path fill="#bfae95" d="M25 230H235V270H25Z"/><path fill="#8ab4c1" stroke="#fff" stroke-width="8" d="M50 85H116V153H50Z"/><path stroke="#fff" stroke-width="4" d="M83 85V153M50 119H116"/><rect x="125" y="181" width="76" height="48" rx="12" fill="#c66e49"/><rect x="137" y="151" width="53" height="49" rx="13" fill="#d98960"/><path stroke="#624b3d" stroke-width="5" d="M137 226V245M190 226V245"/>');
 exhibit('fire','להבות אש',ground+'<path fill="#d8592c" d="M132 52Q151 117 187 145Q232 215 170 253Q90 293 59 224Q30 167 96 124Q84 167 110 177Q134 134 132 52Z"/><path fill="#ffc54c" d="M131 156Q201 244 137 254Q68 250 110 207Q110 232 126 223Z"/>');
 person('uncle','דוד: האח של אבא','#684d37','#dcb694','<text x="130" y="258" font-family="Arial" font-size="20" text-anchor="middle" fill="white">האח של אבא</text>');
-person('grandfather','סבא עם שיער לבן ומשקפיים','#e8e5d9','#e8e5d9','<g fill="none" stroke="#675c49" stroke-width="3"><circle cx="111" cy="142" r="13"/><circle cx="149" cy="142" r="13"/><path d="M124 142H136"/></g>');
-person('rabbi','חכם עם ספר','#685c49','#e5dfcb','<path fill="#d6b674" stroke="#735a38" stroke-width="3" d="M82 240Q108 228 130 240Q150 228 178 240V278Q151 266 130 278Q105 266 82 278Z"/>');
+person('grandfather','סבא עם שיער לבן ומשקפיים','#d9d5c6','#e3dfd1',
+ '<g fill="none" stroke="#6b6152" stroke-width="3"><circle cx="113" cy="130" r="14"/><circle cx="147" cy="130" r="14"/><path d="M127 130h6M99 128l-8-3M161 128l8-3"/></g>'
+ +'<g stroke="#c09a74" stroke-width="2" stroke-linecap="round" opacity=".7"><path d="M97 148q5 4 10 3M163 148q-5 4-10 3"/></g>');
+person('rabbi','חכם עם ספר','#685c49','#e5dfcb',
+ '<path fill="#d6b674" stroke="#735a38" stroke-width="3" d="M78 246q28-13 52 0 22-13 52 0v40q-30-13-52 0-24-13-52 0z"/>'
+ +'<path stroke="#735a38" stroke-width="2" d="M130 246v40"/>'
+ +'<g stroke="#b3945c" stroke-width="2" stroke-linecap="round"><path d="M92 260h28M92 270h24M140 260h28M140 270h24"/></g>');
 exhibit('prophet','נביא זקן עם זקן לבן ארוך, מגילה ומטה',ground
  +'<path stroke="#7a6244" stroke-width="7" stroke-linecap="round" d="M230 296V126q0-14 11-18"/>'
  +'<path fill="#3f6480" d="M58 300q6-58 36-78 14 12 36 12t36-12q30 20 36 78z"/>'
@@ -57,7 +77,22 @@ person('herzl','דיוקן סמלי של הרצל עם זקן שחור','#343b35
 exhibit('village','כפר עם בתים קטנים',ground+[25,99,173].map((x,i)=>`<path fill="#e5d3a6" d="M${x} ${170-i%2*30}h60v72h-60Z"/><path fill="#bd603a" d="M${x-8} ${170-i%2*30}l38-37 38 37Z"/><path fill="#61868c" d="M${x+22} ${204-i%2*30}h17v38h-17Z"/>`).join(''));
 exhibit('city','קריה ובה בניינים',ground+[35,98,166].map((x,i)=>`<path fill="${['#6b91a9','#d1ac76','#a8b293'][i]}" d="M${x} ${110+i%2*34}h55v140h-55Z"/>${[0,1,2].map(y=>`<path fill="#f7edcf" d="M${x+10} ${125+i%2*34+y*32}h10v17h-10ZM${x+33} ${125+i%2*34+y*32}h10v17h-10Z"/>`).join('')}`).join(''));
 exhibit('eight','שמונה כוכבים',[0,1,2,3,4,5,6,7].map(i=>`<path transform="translate(${49+i%4*54} ${115+Math.floor(i/4)*85})" fill="#dda23e" d="M0-23L6-7 23-7 10 4 15 23 0 12-15 23-10 4-23-7-6-7Z"/>`).join(''));
-exhibit('boys','שני בנים',ground+[82,181].map((x,i)=>`<circle fill="#d9ad87" cx="${x}" cy="125" r="27"/><path fill="${i?'#c9764a':'#4b7eaa'}" d="M${x-26} 158h52v76h-52Z"/><path stroke="#746e55" stroke-width="10" d="M${x-15} 231v49M${x+15} 231v49"/>`).join(''));
+exhibit('boys','שני בנים עומדים',ground+[80,180].map((x,i)=>`<g>`
+ +`<path stroke="#d9ad87" stroke-width="9" stroke-linecap="round" d="M${x-12} 226v36M${x+12} 226v36"/>`
+ +`<g fill="#3f4a44"><ellipse cx="${x-12}" cy="266" rx="10" ry="5"/><ellipse cx="${x+12}" cy="266" rx="10" ry="5"/></g>`
+ +`<path fill="#46596b" d="M${x-21} 202h42v18l-14 6-7-10-7 10-14-6z"/>`
+ +`<path fill="${i?'#c9764a':'#4b7eaa'}" d="M${x-23} 150q23 11 46 0l5 56h-56z"/>`
+ +`<path stroke="#d9ad87" stroke-width="8" stroke-linecap="round" d="M${x-20} 164l-9 30M${x+20} 164l9 30"/>`
+ +`<path fill="${i?'#b3673e':'#3f6d96'}" d="M${x-23} 150q9 5 18 6l-3 12q-11-2-18-8z"/>`
+ +`<path fill="${i?'#b3673e':'#3f6d96'}" d="M${x+23} 150q-9 5-18 6l3 12q11-2 18-8z"/>`
+ +`<path fill="${i?'#4a3b2e':'#5b4636'}" d="M${x} 86c-16 0-27 11-26 28 1 10-1 16-3 20h58c-2-4-4-10-3-20 1-17-10-28-26-28z"/>`
+ +`<circle fill="#d9ad87" cx="${x}" cy="118" r="26"/>`
+ +`<path fill="${i?'#4a3b2e':'#5b4636'}" d="M${x-26} 112c0-16 11-26 26-26s26 10 26 26c2-20-10-32-26-32s-28 12-26 32z"/>`
+ +`<g fill="#fdf8ec"><ellipse cx="${x-9}" cy="119" rx="6.5" ry="4.5"/><ellipse cx="${x+9}" cy="119" rx="6.5" ry="4.5"/></g>`
+ +`<g fill="#3a352b"><circle cx="${x-8}" cy="119" r="2.8"/><circle cx="${x+8}" cy="119" r="2.8"/></g>`
+ +`<path fill="none" stroke="#b3805f" stroke-width="2.5" stroke-linecap="round" d="M${x-7} 131q7 6 14 0"/>`
+ +`<path fill="none" stroke="#c09a74" stroke-width="2.5" stroke-linecap="round" d="M${x} 121q4 6 0 8"/>`
+ +`</g>`).join(''));
 exhibit('lightning','ברק בשמים','<path fill="#7b91a1" d="M30 110Q10 64 59 62Q74 22 119 60Q171 36 188 70Q244 66 237 117Z"/><path fill="#edb839" d="M127 105L73 202H121L105 280L190 164H139L172 105Z"/>');
 exhibit('lamp','מנורה מאירה','<circle fill="#efd598" opacity=".65" cx="130" cy="144" r="97"/><path fill="#eebd57" stroke="#b68839" stroke-width="3" d="M93 69H166L196 178H63Z"/><path stroke="#637068" stroke-width="9" d="M130 179V260"/><ellipse fill="#637068" cx="130" cy="266" rx="53" ry="9"/>');
 exhibit('lion','אריה, סמלו של שבט יהודה',ground+'<circle fill="#b86b35" cx="136" cy="151" r="71"/><ellipse fill="#ddb36b" cx="136" cy="161" rx="48" ry="53"/><circle fill="#263e43" cx="119" cy="153" r="4"/><circle fill="#263e43" cx="155" cy="153" r="4"/><path fill="#6c4a30" d="M122 178H150L136 190Z"/><path stroke="#80582d" stroke-width="3" fill="none" d="M136 189V205M116 201Q136 215 157 201"/>');
@@ -93,7 +128,21 @@ exhibit('plain','מישור חקלאי שטוח עד האופק',
  +'<path stroke="#7a6244" stroke-width="7" d="M78 280v22"/>'
  +'<g fill="#e08b3c"><circle cx="66" cy="252" r="5"/><circle cx="88" cy="264" r="5"/><circle cx="82" cy="242" r="4.5"/></g>');
 exhibit('crown','כתר המסמל הוד והדר','<path fill="#e6b955" stroke="#aa803b" stroke-width="3" d="M57 113L96 152L130 91L169 152L205 113L185 223H77Z"/><path fill="#bb594c" d="M116 183L130 168L145 183L130 202Z"/><path stroke="#f6d995" stroke-width="10" d="M77 230H185"/>');
-exhibit('angel','מלאך עם כנפיים','<path fill="#f7f0d9" stroke="#c8baa0" stroke-width="2" d="M122 171Q55 50 28 103Q21 183 112 215M139 171Q205 50 232 103Q239 183 150 215"/><circle fill="#d6b294" cx="130" cy="133" r="24"/><path fill="#a8b9bc" d="M111 158H149L178 263H82Z"/><ellipse stroke="#d3a33e" stroke-width="5" fill="none" cx="130" cy="96" rx="26" ry="8"/>');
+exhibit('angel','מלאך עם כנפיים והילה',
+ '<path fill="#f7f0d9" stroke="#c8baa0" stroke-width="2" d="M120 176Q54 56 27 108Q20 188 110 220M140 176Q206 56 233 108Q240 188 150 220"/>'
+ +'<g stroke="#ddd2b4" stroke-width="2" fill="none"><path d="M44 112q24 34 58 60M56 104q22 36 54 66M216 112q-24 34-58 60M204 104q-22 36-54 66"/></g>'
+ +'<path fill="#a8b9bc" d="M108 172q22 10 44 0l26 116H82z"/>'
+ +'<g stroke="#93a6aa" stroke-width="3" stroke-linecap="round"><path d="M112 206l-6 82M148 206l6 82M130 214v74"/></g>'
+ +'<path fill="#c9d3d4" d="M108 172q22 10 44 0 4 12 4 22-26 10-52 0 0-10 4-22z"/>'
+ +'<path stroke="#d6b294" stroke-width="9" stroke-linecap="round" d="M112 194l-12 30M148 194l12 30"/>'
+ +'<path fill="#c9a97c" d="M130 111c-17 0-28 12-27 29 1 9-1 15-3 19h60c-2-4-4-10-3-19 1-17-10-29-27-29z"/>'
+ +'<circle fill="#d6b294" cx="130" cy="140" r="25"/>'
+ +'<path fill="#c9a97c" d="M105 134c0-15 11-25 25-25s25 10 25 25c2-19-10-30-25-30s-27 11-25 30z"/>'
+ +'<g fill="#fdf8ec"><ellipse cx="121" cy="141" rx="7" ry="4.8"/><ellipse cx="139" cy="141" rx="7" ry="4.8"/></g>'
+ +'<g fill="#3a352b"><circle cx="122" cy="141" r="3"/><circle cx="138" cy="141" r="3"/></g>'
+ +'<path fill="none" stroke="#c09a74" stroke-width="2.5" stroke-linecap="round" d="M130 144q4 7 0 9"/>'
+ +'<path fill="none" stroke="#b3805f" stroke-width="2.5" stroke-linecap="round" d="M123 154q7 6 14 0"/>'
+ +'<ellipse stroke="#d3a33e" stroke-width="5" fill="none" cx="130" cy="104" rx="27" ry="8"/>');
 exhibit('winepress','גת אבן עם ענבים',ground
  +'<path fill="#cabb9a" d="M26 168h178l-12 66H38z"/>'
  +'<path fill="#ddd0b0" d="M26 168h178v12H26z"/>'
@@ -154,7 +203,25 @@ exhibit('eagle','נשר פורש כנפיים',
  +'<g stroke="#e0a63c" stroke-width="5" stroke-linecap="round"><path d="M120 258v16M140 258v16"/></g>');
 exhibit('sky','שמיים ועננים','<path fill="#a2c2cb" d="M0 0H260V310H0Z"/><g fill="#f9f5e8"><ellipse cx="81" cy="122" rx="60" ry="20"/><circle cx="71" cy="102" r="28"/><circle cx="105" cy="108" r="25"/><ellipse cx="182" cy="214" rx="64" ry="22"/><circle cx="175" cy="194" r="31"/></g>');
 exhibit('castle','טירה עם צריחים',ground+'<path fill="#c7b08a" d="M48 112H91V267H48ZM168 112H212V267H168ZM86 170H174V267H86Z"/><path fill="#526d82" d="M38 112L70 64L101 112ZM158 112L190 64L222 112Z"/><path fill="#71694f" d="M112 267V225A18 18 0 0 1 148 225V267Z"/>');
-exhibit('builder','פועל שיבנה קיר',ground+'<circle fill="#d7ae8b" cx="97" cy="108" r="25"/><path fill="#e5b64c" d="M65 99Q68 60 99 65Q128 63 130 99Z"/><path fill="#5a87a4" d="M73 134H121V229H73Z"/><path stroke="#6c6d60" stroke-width="8" d="M83 228V278M111 228V278"/><path fill="#c88b67" stroke="#f4d8b5" stroke-width="3" d="M139 178H232V273H139ZM139 210H232M139 242H232M182 178V210M163 210V242M204 210V242"/>');
+exhibit('builder','פועל עם כף בנאים בונה קיר',ground
+ +'<path fill="#c88b67" stroke="#efd3ae" stroke-width="3" d="M142 196h96v80h-96z"/>'
+ +'<g stroke="#efd3ae" stroke-width="3"><path d="M142 222h96M142 249h96M190 196v26M166 222v27M214 222v27M190 249v27"/></g>'
+ +'<path fill="#d1926d" stroke="#efd3ae" stroke-width="3" d="M186 170h46v26h-46z"/>'
+ +'<path stroke="#46596b" stroke-width="10" stroke-linecap="round" d="M80 226v46M104 226v46"/>'
+ +'<g fill="#3f4a44"><path d="M68 268h22v10H68zM94 268h22v10H94z"/></g>'
+ +'<path fill="#5a87a4" d="M66 148q26 12 52 0l6 80H60z"/>'
+ +'<g stroke="#e8d489" stroke-width="5"><path d="M64 180h56M62 196h60"/></g>'
+ +'<path stroke="#d7ae8b" stroke-width="9" stroke-linecap="round" d="M68 162l-12 38M118 162l32 12"/>'
+ +'<path fill="#9aa4a0" d="M146 166l30-8-6 18z"/>'
+ +'<path stroke="#7a6244" stroke-width="5" stroke-linecap="round" d="M142 174l-6 4"/>'
+ +'<circle fill="#d7ae8b" cx="92" cy="116" r="25"/>'
+ +'<g fill="#fdf8ec"><ellipse cx="83" cy="117" rx="6.5" ry="4.5"/><ellipse cx="101" cy="117" rx="6.5" ry="4.5"/></g>'
+ +'<g fill="#3a352b"><circle cx="84" cy="117" r="2.8"/><circle cx="100" cy="117" r="2.8"/></g>'
+ +'<path fill="none" stroke="#c09a74" stroke-width="2.5" stroke-linecap="round" d="M92 119q4 7 0 9"/>'
+ +'<path fill="none" stroke="#b3805f" stroke-width="2.5" stroke-linecap="round" d="M85 130q7 6 14 0"/>'
+ +'<path fill="#e5b64c" d="M92 76c-17 0-27 12-27 28h54c0-16-10-28-27-28z"/>'
+ +'<path fill="#d19f33" d="M60 104h64v9H60z"/>'
+ +'<path fill="#f0c96a" d="M88 78h8v22h-8z"/>');
 inscription('future','מחר','המילה מחר, זמן עתיד');
 exhibit('giving','אדם נותן מתנה','<path fill="#7191a9" d="M0 210L63 175L104 213L66 251L0 260Z"/><path fill="#d7b394" d="M63 175L101 158L158 186Q190 192 180 209L113 225L99 231Z"/><rect fill="#cb6d53" x="131" y="108" width="73" height="77"/><path stroke="#f2cc76" stroke-width="9" d="M167 108V185M131 127H204"/>');
 exhibit('poem','ספר שירה ונוצת סופר',
@@ -175,8 +242,12 @@ exhibit('arrived','אדם שהגיע אל היעד',ground
  +'<ellipse fill="#c4774f" cx="200" cy="272" rx="15" ry="5"/>'
  +'<path stroke="#7a6244" stroke-width="5" stroke-linecap="round" d="M200 268V128"/>'
  +'<path fill="#c4774f" d="M200 132h44l-12 17 12 17h-44z"/>'
+ +'<path fill="#4a3b2e" d="M98 140c-13 0-22 9-21 23 0 8-1 13-3 16h48c-2-3-3-8-3-16 1-14-8-23-21-23z"/>'
  +'<circle fill="#d9b391" cx="98" cy="168" r="21"/>'
- +'<path fill="#4a3b2e" d="M77 162q4-24 21-24 18 0 21 24-10-9-21-9t-21 9z"/>'
+ +'<path fill="#4a3b2e" d="M77 163c0-13 9-21 21-21s21 8 21 21c2-16-9-26-21-26s-23 10-21 26z"/>'
+ +'<g fill="#fdf8ec"><ellipse cx="91" cy="168" rx="5.5" ry="4"/><ellipse cx="105" cy="168" rx="5.5" ry="4"/></g>'
+ +'<g fill="#3a352b"><circle cx="92" cy="168" r="2.4"/><circle cx="104" cy="168" r="2.4"/></g>'
+ +'<path fill="none" stroke="#b3805f" stroke-width="2.2" stroke-linecap="round" d="M92 179q6 5 12 0"/>'
  +'<path fill="#5c8097" d="M80 194h36l9 56H71z"/>'
  +'<path fill="#8a6a4a" d="M64 198h18v34H64z"/>'
  +'<g stroke="#d9b391" stroke-width="9" stroke-linecap="round"><path d="M84 200L62 158M112 200l24-42"/></g>'
