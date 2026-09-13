@@ -21,15 +21,58 @@ exhibit('dove','יונת שלום','<path fill="#f7f1dc" stroke="#b4b5a2" stroke
 exhibit('globe','כדור הארץ','<circle fill="#6cabc1" cx="130" cy="154" r="91"/><path fill="#83a97b" d="M78 77L135 70L160 96L133 128L160 164L138 205L103 215L88 162L49 146ZM174 183L207 172L213 216L183 234Z"/>');
 exhibit('iron','מוטות מתכת','<path fill="#8c9da5" stroke="#536b79" stroke-width="3" d="M51 103L90 78L124 96L87 122ZM51 103V260L87 281V122ZM87 122L124 96V253L87 281ZM143 112L180 89L215 108L178 136ZM143 112V264L178 284V136ZM178 136L215 108V259L178 284Z"/>');
 exhibit('cedar','עץ ארז',ground+'<path stroke="#836944" stroke-width="11" d="M131 270V94"/><path fill="#528068" d="M131 51L76 115H102L46 180H83L21 234H239L179 180H215L159 115H185Z"/>');
-exhibit('beam','קרן אור','<path fill="#eac272" opacity=".8" d="M79 82L218 207L106 263Z"/><circle fill="#efce82" cx="79" cy="82" r="26"/><path stroke="#aa8743" stroke-width="4" d="M44 46L29 30M77 33V15M32 78H11"/>');
-exhibit('leveltool','פלס בנאים','<rect fill="#deb14e" x="28" y="121" width="207" height="68" rx="7"/><rect fill="#a7c5aa" x="100" y="136" width="62" height="35" rx="14"/><circle fill="#f4ebc5" cx="130" cy="153" r="10"/><path stroke="#4f6559" stroke-width="3" d="M119 139V168M141 139V168"/>');
+exhibit('beam','פנס שמטיל קרן אור',
+ '<path fill="#4a4a43" opacity=".14" d="M0 0h260v310H0z"/>'
+ +'<path fill="#b7ae95" d="M0 282h260v28H0z"/>'
+ +'<path fill="#f3dc9a" opacity=".72" d="M40 94h30l112 188H110z"/>'
+ +'<path fill="#fbefc6" opacity=".85" d="M48 96h14l68 186H96z"/>'
+ +'<ellipse fill="#f8ecc0" opacity=".9" cx="146" cy="284" rx="58" ry="11"/>'
+ +'<path stroke="#4f5a54" stroke-width="6" d="M34 46h26M55 46v18"/>'
+ +'<path fill="#4f5a54" d="M30 62h50l-10 34H40z"/>'
+ +'<path fill="#5f6b62" d="M30 62h50v8H30z"/>'
+ +'<ellipse fill="#faeec2" cx="55" cy="96" rx="16" ry="6"/>'
+ +'<g stroke="#f3dc9a" stroke-width="3" opacity=".8" stroke-linecap="round"><path d="M92 84l14-14M84 62l6-16M26 106l-16 8"/></g>');
+exhibit('leveltool','פלס בנאים עם בועת אוויר',
+ '<path fill="#c88b67" d="M26 214h208v64H26z"/>'
+ +'<g stroke="#e8c9a6" stroke-width="3"><path d="M26 246h208M80 214v32M156 214v32M52 246v32M118 246v32M196 246v32"/></g>'
+ +'<rect fill="#dfa93d" x="14" y="144" width="232" height="56" rx="9"/>'
+ +'<rect fill="#efc464" x="14" y="144" width="232" height="15" rx="7"/>'
+ +'<g fill="#5f6b62"><path d="M20 144h20v56H20a6 6 0 0 1-6-6v-44a6 6 0 0 1 6-6z"/><path d="M220 144h20a6 6 0 0 1 6 6v44a6 6 0 0 1-6 6h-20z"/></g>'
+ +'<rect fill="#eef5ef" stroke="#8a6a2e" stroke-width="3" x="94" y="158" width="72" height="30" rx="15"/>'
+ +'<ellipse fill="#a8d8c2" cx="130" cy="173" rx="13" ry="10"/>'
+ +'<ellipse fill="#e6f6ee" cx="126" cy="170" rx="5" ry="3"/>'
+ +'<g stroke="#3f4a44" stroke-width="3"><path d="M113 159v28M147 159v28"/></g>'
+ +'<rect fill="#eef5ef" stroke="#8a6a2e" stroke-width="2" x="50" y="156" width="26" height="34" rx="13"/>'
+ +'<ellipse fill="#a8d8c2" cx="63" cy="171" rx="9" ry="7"/>'
+ +'<g stroke="#8a6a2e" stroke-width="2" opacity=".8">'
+ +[0,1,2,3,4,5,6,7].map(i=>`<path d="M${186+i*7} 196v-8"/>`).join('')+'</g>');
 exhibit('microphone','מיקרופון','<path stroke="#506a7a" stroke-width="9" d="M130 188V269M89 270H171"/><rect fill="#87999b" stroke="#47647a" stroke-width="4" x="96" y="53" width="68" height="133" rx="34"/><path stroke="#47647a" stroke-width="4" d="M106 87H154M106 103H154M106 119H154M80 145Q80 219 130 219Q180 219 180 145"/>');
-exhibit('sharp','קצוות חדים','<path fill="#91a5af" stroke="#536877" stroke-width="3" d="M35 253L88 78L99 253ZM115 253L166 47L175 253ZM189 253L228 103L234 253Z"/>');
+exhibit('sharp','עיפרון מחודד לחוד חד',
+ '<path fill="#d98a7e" d="M102 46h56v22a10 10 0 0 1-10 10h-36a10 10 0 0 1-10-10z"/>'
+ +'<path fill="#9aa4a0" d="M102 74h56v20h-56z"/>'
+ +'<g stroke="#7d8784" stroke-width="2"><path d="M102 80h56M102 88h56"/></g>'
+ +'<path fill="#dfa93d" d="M102 94h56v124h-56z"/>'
+ +'<path fill="#c9942f" d="M140 94h18v124h-18z"/>'
+ +'<path fill="#efc464" d="M102 94h12v124h-12z"/>'
+ +'<path fill="#efdcb4" d="M102 218h56l-28 62z"/>'
+ +'<path fill="#dcc596" d="M140 218h18l-28 62z"/>'
+ +'<path fill="#3c3a34" d="M119 244h22l-11 36z"/>'
+ +'<g fill="#efdcb4" stroke="#c9b58c" stroke-width="2"><path d="M46 254q22-18 34 2-18 14-34-2z"/><path d="M196 238q20-16 32 4-18 12-32-4z"/></g>'
+ +'<g stroke="#c9942f" stroke-width="3" stroke-linecap="round"><path d="M98 286l-14 12M162 286l14 12M130 292v14"/></g>');
 exhibit('judo','חליפת ג׳ודו','<path fill="#f4f0e0" stroke="#bec4b9" stroke-width="3" d="M86 72L35 104L16 174L56 189L76 139L69 257H191L184 139L205 189L246 174L225 104L175 72L130 103Z"/><path stroke="#c2c6ba" stroke-width="5" d="M87 76L158 197M175 76L104 197"/><path stroke="#334f70" stroke-width="16" d="M70 199H191M129 199L109 248M135 199L161 242"/>');
 exhibit('gold','זהב ומקום ראשון','<path fill="#5681a5" d="M72 42H111L150 143H108ZM147 42H188L152 143H111Z"/><circle fill="#dfb447" stroke="#f2d894" stroke-width="8" cx="130" cy="191" r="66"/><text x="130" y="214" text-anchor="middle" fill="#fff2c6" font-size="60">1</text>');
 exhibit('silver','מדליית כסף','<path fill="#5d82a1" d="M72 42H111L150 143H108ZM147 42H188L152 143H111Z"/><circle fill="#9fb0b8" stroke="#dbe3db" stroke-width="8" cx="130" cy="191" r="66"/><text x="130" y="214" text-anchor="middle" fill="#f5f5e6" font-size="60">2</text>');
 exhibit('windsurf','גלשן רוח','<path fill="#6ca3b6" d="M0 249H260V310H0Z"/><ellipse fill="#cf8a4c" cx="133" cy="248" rx="99" ry="9"/><path stroke="#546e7a" stroke-width="5" d="M128 244V40"/><path fill="#cd6f50" d="M131 44L225 216H131Z"/><path fill="#ecd08d" d="M125 71L52 205H125Z"/>');
-exhibit('ribbon','סרט התעמלות אומנותית','<path stroke="#c06b99" stroke-width="10" fill="none" d="M52 249C234 255 228 62 86 68C-2 73 87 191 184 187C247 187 221 246 160 240"/><path stroke="#6a7b83" stroke-width="5" d="M52 249L35 285"/>');
+exhibit('ribbon','מתעמלת עם סרט מתעופף',
+ '<path fill="#a5b59c" d="M0 268q130-24 260 4v38H0z"/>'
+ +'<circle fill="#d9b391" cx="80" cy="128" r="17"/>'
+ +'<path fill="#4a3b2e" d="M63 124q3-20 17-20 15 0 17 20-8-8-17-8t-17 8z"/>'
+ +'<circle fill="#4a3b2e" cx="64" cy="116" r="8"/>'
+ +'<path fill="#c2547f" d="M68 148h24l6 54H62z"/>'
+ +'<g stroke="#d9b391" stroke-width="8" stroke-linecap="round"><path d="M90 156l32-24M70 158L44 178"/></g>'
+ +'<g stroke="#d9b391" stroke-width="9" stroke-linecap="round"><path d="M74 202v62M90 204l40 34"/></g>'
+ +'<path stroke="#7a6244" stroke-width="4" stroke-linecap="round" d="M120 134l16-12"/>'
+ +'<path fill="none" stroke="#d4589a" stroke-width="7" stroke-linecap="round" d="M136 122q44-20 66 12 18 30-12 42-28 10-26-16 2-24 32-20 34 4 34 42 0 38-46 44"/>');
 exhibit('gymfloor','משטח התעמלות קרקע','<path fill="#95b8bf" stroke="#f4e9cf" stroke-width="10" d="M42 152H217L246 269H13Z"/><circle fill="#d1ac8d" cx="135" cy="64" r="14"/><path stroke="#4c7192" stroke-width="11" fill="none" stroke-linecap="round" d="M133 86L124 149L80 189M124 149L175 187M130 99L81 79M130 99L178 78"/>');
 exhibit('tennis','מחבט וכדור טניס','<ellipse fill="#d0dccf" stroke="#557c92" stroke-width="9" transform="rotate(25 149 117)" cx="149" cy="117" rx="53" ry="74"/><path stroke="#566f7d" stroke-width="13" d="M123 179L74 275"/><path stroke="#9faf9e" stroke-width="2" d="M115 65L161 184M139 49L185 167M94 113L188 80M107 147L201 114"/><circle fill="#b7c86c" cx="202" cy="249" r="25"/>');
 exhibit('football','כדורגל','<circle fill="#efe8d6" stroke="#86928a" stroke-width="4" cx="130" cy="162" r="87"/><path fill="#4a6070" d="M130 128L159 149L149 184H111L101 149ZM58 125L83 102L93 120L77 147ZM197 125L176 100L166 118L183 147ZM80 216L104 215L111 240L90 238ZM179 216L154 215L148 240L169 238Z"/>');
