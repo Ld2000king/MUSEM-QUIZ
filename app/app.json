@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "מקום למחשבה",
+    "slug": "musem-quiz",
+    "scheme": "musemquiz",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon-512.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#fffdf9",
+    "primaryColor": "#7a5230",
+    "splash": {
+      "image": "./assets/icon-512.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#fffdf9"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ld2000king.musemquiz"
+    },
+    "android": {
+      "package": "com.ld2000king.musemquiz",
+      "adaptiveIcon": {
+        "backgroundColor": "#fffdf9",
+        "foregroundImage": "./assets/icon-512.png"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./assets/icon-192.png",
+      "lang": "he",
+      "dir": "rtl",
+      "name": "מקום למחשבה",
+      "shortName": "מקום למחשבה",
+      "themeColor": "#f8f3e6",
+      "backgroundColor": "#fffdf9",
+      "description": "משחק מוזיאון עם 80 חידות: ערים בישראל, ערים בארה״ב, זמרים וספורטאים ישראלים."
+    },
+    "experiments": {
+      "baseUrl": "/MUSEM-QUIZ"
+    }
+  }
+}
