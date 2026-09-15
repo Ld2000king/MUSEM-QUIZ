@@ -15,6 +15,7 @@ import {
 import RoomScene from '../components/RoomScene.js';
 import FramedArt from '../components/FramedArt.js';
 import {Coin} from '../components/CoinPill.js';
+import Keyboard from '../components/Keyboard.js';
 import {PrimaryButton} from '../components/ui.js';
 import {useCelebration, pulse, flash} from '../celebrate.js';
 import {artName, kindLabel, wingLabel, WING_SIZE} from '../data/exhibitions.js';
@@ -85,6 +86,8 @@ export default function GalleryScreen({
   feedbackTone,
   invalid,
   celebration,
+  typing,
+  onTyping,
 }) {
   const {height, width} = useWindowDimensions();
   const total = exhibition.levels.length;
@@ -104,8 +107,18 @@ export default function GalleryScreen({
   // Downwards, the print hangs below the map row and has to clear the plaque
   // standing on the floor — plus its own frame, and the wall label when the
   // screen is tall enough to show one.
+  // Typing costs the room height, so it sheds the plaque and the wall labels —
+  // but only once the room is actually short enough to need the space. On a
+  // tall screen the plaque stays, and the floor doesn't sit empty.
+  const roomIsTight = roomHeight > 0 && roomHeight < 320;
+  const showPlaque = !typing || !roomIsTight;
+  const showLabels = !compact && (!typing || !roomIsTight);
   const budget =
-    roomHeight - ROOM_TOP - FRAME_CHROME - PLAQUE_CLEARANCE - (compact ? 0 : LABEL_HEIGHT);
+    roomHeight -
+    ROOM_TOP -
+    FRAME_CHROME -
+    (showPlaque ? PLAQUE_CLEARANCE : 12) -
+    (showLabels ? LABEL_HEIGHT : 0);
   const artWidth = Math.max(
     86,
     Math.min(rowWidth / 2, budget > 0 ? budget * (260 / 310) : rowWidth / 2)
@@ -152,7 +165,7 @@ export default function GalleryScreen({
   return (
     <View style={styles.screen}>
       <View
-        style={styles.room}
+        style={[styles.room, typing && styles.roomTyping]}
         onLayout={event => setRoomHeight(event.nativeEvent.layout.height)}>
         <View style={StyleSheet.absoluteFill}>
           <RoomScene theme={roomTheme} />
@@ -167,7 +180,7 @@ export default function GalleryScreen({
           </Text>
         </View>
 
-        {!compact ? (
+        {!compact && !typing ? (
           <Text style={[styles.wingMark, {color: accent}]} accessibilityElementsHidden>
             {pad2(current + 1)}
           </Text>
@@ -196,7 +209,7 @@ export default function GalleryScreen({
                   width={artWidth}
                   wing={wing}
                   solved={done}
-                  showLabel={!compact}
+                  showLabel={showLabels}
                   celebrate={celebration?.id}
                   onPress={() => onZoom(index)}
                 />
@@ -214,6 +227,7 @@ export default function GalleryScreen({
           </Pressable>
         </View>
 
+        {showPlaque ? (
         <Animated.View
           style={[
             styles.plaque,
@@ -241,8 +255,9 @@ export default function GalleryScreen({
                   : 'חברו את הרמזים מימין לשמאל'}
           </Text>
         </Animated.View>
+        ) : null}
 
-        {celebrating && celebration?.coins ? (
+        {showPlaque && celebrating && celebration?.coins ? (
           <Animated.View
             pointerEvents="none"
             style={[
@@ -285,6 +300,8 @@ export default function GalleryScreen({
                 value={answer}
                 onChangeText={onAnswer}
                 onSubmitEditing={onSubmit}
+                onFocus={() => onTyping(true)}
+                onPress={() => onTyping(true)}
                 placeholder={
                   exhibition.subject === 'עיר' ? 'הקלידו את שם העיר' : 'הקלידו את השם המלא'
                 }
@@ -292,6 +309,13 @@ export default function GalleryScreen({
                 maxLength={40}
                 returnKeyType="done"
                 autoCorrect={false}
+                // The museum brings its own keyboard, so the system one stays
+                // down — on native via showSoftInputOnFocus, and on the web
+                // via inputMode="none", which mobile browsers honour. Both
+                // leave the field focusable, so a hardware keyboard (desktop
+                // web especially) still types into it normally.
+                showSoftInputOnFocus={false}
+                inputMode="none"
                 accessibilityLabel={exhibition.question}
                 aria-invalid={invalid}
                 style={[styles.input, invalid && styles.inputInvalid]}
@@ -325,6 +349,17 @@ export default function GalleryScreen({
           <Text style={styles.footNote}>מבט נוסף עושה את ההבדל</Text>
         </View>
       </View>
+
+      {!done && typing ? (
+        <Keyboard
+          canSubmit={answer.trim().length > 0}
+          onKey={letter => onAnswer(answer + letter)}
+          onBackspace={() => onAnswer(answer.slice(0, -1))}
+          onSpace={() => onAnswer(answer + ' ')}
+          onSubmit={onSubmit}
+          onClose={() => onTyping(false)}
+        />
+      ) : null}
     </View>
   );
 }
@@ -332,6 +367,7 @@ export default function GalleryScreen({
 const styles = StyleSheet.create({
   screen: {flex: 1},
   room: {flex: 1, minHeight: 210, overflow: 'hidden', backgroundColor: colors.chrome},
+  roomTyping: {minHeight: 130},
   roomTop: {
     flexDirection: 'row-reverse',
     justifyContent: 'space-between',

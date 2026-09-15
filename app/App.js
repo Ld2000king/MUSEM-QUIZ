@@ -70,6 +70,9 @@ export default function App() {
   const [offline, setOffline] = useState(false);
   // Set on every correct answer; the room and the coin counter animate off it.
   const [celebration, setCelebration] = useState(null);
+  // The museum's own keyboard is up. Like the vanilla build's .keyboard-open
+  // rules, the chrome steps aside to give the room and the keys the height.
+  const [typing, setTyping] = useState(false);
 
   const exhibition = useMemo(
     () => exhibitions.find(item => item.id === exhibitionId) || exhibitions[0],
@@ -207,11 +210,13 @@ export default function App() {
   const showLobby = useCallback(() => {
     setView('lobby');
     setModal(null);
+    setTyping(false);
   }, []);
 
   const showEntrance = useCallback(() => {
     setView('entrance');
     setModal(null);
+    setTyping(false);
   }, []);
 
   // "Carry on where I was" — the active exhibition, at the room it remembers.
@@ -234,6 +239,7 @@ export default function App() {
       next.add(current);
       setSolved(next);
       setCelebration({id: Date.now(), coins: reward.coins});
+      setTyping(false);
       setAnswer('');
       setInvalid(false);
       setFeedbackTone('');
@@ -363,7 +369,7 @@ export default function App() {
         <KeyboardAvoidingView
           style={styles.main}
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-          {view === 'gallery' || view === 'collection' ? (
+          {(view === 'gallery' || view === 'collection') && !typing ? (
             <View style={styles.intro}>
               <Eyebrow>● {exhibition.title} · VOL. 01</Eyebrow>
               <CoinPill count={coins} celebrate={celebration?.id} />
@@ -429,16 +435,15 @@ export default function App() {
               feedbackTone={feedbackTone}
               invalid={invalid}
               celebration={celebration}
+              typing={typing}
+              onTyping={setTyping}
             />
           )}
         </KeyboardAvoidingView>
 
-        <BottomNav
-          active={activeTab}
-          count={solved.size}
-          onTab={onTab}
-          bottomInset={0}
-        />
+        {!typing ? (
+          <BottomNav active={activeTab} count={solved.size} onTab={onTab} bottomInset={0} />
+        ) : null}
       </View>
 
       <MapModal
