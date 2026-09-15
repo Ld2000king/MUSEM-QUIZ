@@ -68,6 +68,8 @@ export default function App() {
   const [friend, setFriend] = useState(null);
   const [installText, setInstallText] = useState('');
   const [offline, setOffline] = useState(false);
+  // Set on every correct answer; the room and the coin counter animate off it.
+  const [celebration, setCelebration] = useState(null);
 
   const exhibition = useMemo(
     () => exhibitions.find(item => item.id === exhibitionId) || exhibitions[0],
@@ -231,6 +233,7 @@ export default function App() {
       const next = new Set(solved);
       next.add(current);
       setSolved(next);
+      setCelebration({id: Date.now(), coins: reward.coins});
       setAnswer('');
       setInvalid(false);
       setFeedbackTone('');
@@ -363,7 +366,7 @@ export default function App() {
           {view === 'gallery' || view === 'collection' ? (
             <View style={styles.intro}>
               <Eyebrow>● {exhibition.title} · VOL. 01</Eyebrow>
-              <CoinPill count={coins} />
+              <CoinPill count={coins} celebrate={celebration?.id} />
             </View>
           ) : null}
 
@@ -425,6 +428,7 @@ export default function App() {
               feedback={feedback}
               feedbackTone={feedbackTone}
               invalid={invalid}
+              celebration={celebration}
             />
           )}
         </KeyboardAvoidingView>

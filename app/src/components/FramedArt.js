@@ -1,14 +1,29 @@
 // A print in its brass frame, on a bright mat, with the wall label beneath.
 // Tapping it opens the enlarged view — the label says so.
+//
+// When the room is solved, the print takes a bow: it swells slightly, a gold
+// halo blooms around the frame, and the gallery light sweeps across the glass.
 import React from 'react';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {Animated, View, Text, Pressable, StyleSheet} from 'react-native';
 import Artwork, {isSculpture} from './Artwork.js';
 import {colors, wingColor} from '../theme.js';
+import {useCelebration, pulse, flash} from '../celebrate.js';
 
-export default function FramedArt({artKey, part, width, wing, solved, showLabel, onPress, artLabel}) {
+export default function FramedArt({
+  artKey,
+  part,
+  width,
+  wing,
+  solved,
+  showLabel,
+  onPress,
+  artLabel,
+  celebrate,
+}) {
   const sculpture = isSculpture(artKey);
   const accent = wingColor(wing);
   const height = Math.round(width * (310 / 260));
+  const [progress, active] = useCelebration(celebrate);
 
   return (
     <Pressable
@@ -16,16 +31,52 @@ export default function FramedArt({artKey, part, width, wing, solved, showLabel,
       accessibilityRole="button"
       accessibilityLabel={`הגדלת פרט ${part} · ${artLabel}`}
       style={({pressed}) => [styles.art, {width}, pressed && styles.pressed]}>
-      <View
-        style={[
-          styles.frame,
-          sculpture && styles.frameless,
-          solved && !sculpture && styles.solvedFrame,
-        ]}>
-        <View style={[styles.mat, sculpture && styles.frameless]}>
-          <Artwork artKey={artKey} width="100%" height={height} />
+      <Animated.View style={{width: '100%', transform: [{scale: pulse(progress, 1.05)}]}}>
+        {active ? (
+          <Animated.View
+            pointerEvents="none"
+            style={[
+              styles.halo,
+              {
+                opacity: flash(progress, 0.95),
+                transform: [{scale: progress.interpolate({inputRange: [0, 1], outputRange: [1, 1.18]})}],
+              },
+            ]}
+          />
+        ) : null}
+
+        <View
+          style={[
+            styles.frame,
+            sculpture && styles.frameless,
+            solved && !sculpture && styles.solvedFrame,
+          ]}>
+          <View style={[styles.mat, sculpture && styles.frameless]}>
+            <Artwork artKey={artKey} width="100%" height={height} />
+            {active ? (
+              <Animated.View
+                pointerEvents="none"
+                style={[
+                  styles.sweep,
+                  {
+                    opacity: flash(progress, 0.55, 0.4),
+                    transform: [
+                      {
+                        translateX: progress.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [-width * 1.1, width * 1.1],
+                        }),
+                      },
+                      {rotate: '12deg'},
+                    ],
+                  },
+                ]}
+              />
+            ) : null}
+          </View>
         </View>
-      </View>
+      </Animated.View>
+
       {showLabel ? (
         <View style={[styles.label, {borderRightColor: accent}]}>
           <Text style={styles.labelText} numberOfLines={1}>
@@ -44,6 +95,16 @@ export default function FramedArt({artKey, part, width, wing, solved, showLabel,
 const styles = StyleSheet.create({
   art: {alignItems: 'center'},
   pressed: {opacity: 0.85},
+  halo: {
+    position: 'absolute',
+    top: -7,
+    left: -7,
+    right: -7,
+    bottom: -7,
+    borderWidth: 3,
+    borderColor: '#f3cd84',
+    borderRadius: 3,
+  },
   frame: {
     width: '100%',
     padding: 4,
@@ -69,6 +130,16 @@ const styles = StyleSheet.create({
     backgroundColor: colors.mat,
     borderWidth: 1,
     borderColor: colors.matLine,
+    // Keeps the light sweep inside the glass.
+    overflow: 'hidden',
+  },
+  // A band of light crossing the print, like the gallery lamp catching glass.
+  sweep: {
+    position: 'absolute',
+    top: -40,
+    bottom: -40,
+    width: '45%',
+    backgroundColor: '#fff',
   },
   label: {
     flexDirection: 'row-reverse',

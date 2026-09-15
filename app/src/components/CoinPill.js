@@ -1,9 +1,10 @@
 // The museum's coin: a brass token with a column struck on it. Used for the
 // running balance in the chrome and for the larger figure in the shop.
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {Animated, Text, StyleSheet} from 'react-native';
 import Svg, {Circle, Path, G} from 'react-native-svg';
 import {colors} from '../theme.js';
+import {useCelebration, pulse} from '../celebrate.js';
 
 export function Coin({size = 16}) {
   return (
@@ -19,16 +20,24 @@ export function Coin({size = 16}) {
   );
 }
 
-export default function CoinPill({count, size = 'small', style, label}) {
+export default function CoinPill({count, size = 'small', style, label, celebrate}) {
   const large = size === 'large';
+  // Earning coins gives the counter a nudge, so the number changing is felt
+  // and not just noticed.
+  const [progress] = useCelebration(celebrate, 700);
   return (
-    <View
-      style={[styles.pill, large && styles.pillLarge, style]}
+    <Animated.View
+      style={[
+        styles.pill,
+        large && styles.pillLarge,
+        style,
+        {transform: [{scale: pulse(progress, 1.22, 0.3)}]},
+      ]}
       accessibilityRole="text"
       accessibilityLabel={label || `${count} מטבעות`}>
       <Coin size={large ? 26 : 16} />
       <Text style={[styles.count, large && styles.countLarge]}>{count}</Text>
-    </View>
+    </Animated.View>
   );
 }
 

@@ -3,6 +3,7 @@
 // the room number is painted on the wall beside them.
 import React, {useMemo, useRef, useState} from 'react';
 import {
+  Animated,
   View,
   Text,
   Pressable,
@@ -13,7 +14,9 @@ import {
 } from 'react-native';
 import RoomScene from '../components/RoomScene.js';
 import FramedArt from '../components/FramedArt.js';
+import {Coin} from '../components/CoinPill.js';
 import {PrimaryButton} from '../components/ui.js';
+import {useCelebration, pulse, flash} from '../celebrate.js';
 import {artName, kindLabel, wingLabel, WING_SIZE} from '../data/exhibitions.js';
 import {colors, wingColor, serif} from '../theme.js';
 
@@ -81,6 +84,7 @@ export default function GalleryScreen({
   feedback,
   feedbackTone,
   invalid,
+  celebration,
 }) {
   const {height, width} = useWindowDimensions();
   const total = exhibition.levels.length;
@@ -132,6 +136,11 @@ export default function GalleryScreen({
         .join(' + ') + ' אותיות',
     [level.city]
   );
+
+  // The whole room reacts to a solve: the prints take a bow, the plaque that
+  // now carries the answer swells, and the coins earned drift up towards the
+  // counter in the strip above.
+  const [reveal, celebrating] = useCelebration(celebration?.id);
 
   const continueLabel =
     solved.size === total
@@ -188,6 +197,7 @@ export default function GalleryScreen({
                   wing={wing}
                   solved={done}
                   showLabel={!compact}
+                  celebrate={celebration?.id}
                   onPress={() => onZoom(index)}
                 />
               </React.Fragment>
@@ -204,7 +214,12 @@ export default function GalleryScreen({
           </Pressable>
         </View>
 
-        <View style={styles.plaque}>
+        <Animated.View
+          style={[
+            styles.plaque,
+            celebrating && styles.plaqueRevealing,
+            {transform: [{scale: pulse(reveal, 1.07)}]},
+          ]}>
           <View style={styles.plaquePin} />
           <Text style={styles.plaqueNumber}>
             {kindLabel(level.kind)} / {pad3(current + 1)}
@@ -225,7 +240,25 @@ export default function GalleryScreen({
                   ? 'זהו את השם בעזרת שני הרמזים'
                   : 'חברו את הרמזים מימין לשמאל'}
           </Text>
-        </View>
+        </Animated.View>
+
+        {celebrating && celebration?.coins ? (
+          <Animated.View
+            pointerEvents="none"
+            style={[
+              styles.earned,
+              {
+                opacity: flash(reveal, 1, 0.25),
+                transform: [
+                  {translateY: reveal.interpolate({inputRange: [0, 1], outputRange: [0, -62]})},
+                  {scale: pulse(reveal, 1.1, 0.25)},
+                ],
+              },
+            ]}>
+            <Coin size={18} />
+            <Text style={styles.earnedText}>{celebration.coins}</Text>
+          </Animated.View>
+        ) : null}
       </View>
 
       <View style={styles.tourStrip}>
@@ -372,6 +405,24 @@ const styles = StyleSheet.create({
     borderColor: colors.parchmentLine,
     alignItems: 'center',
   },
+  plaqueRevealing: {borderColor: '#d9ac66'},
+  earned: {
+    position: 'absolute',
+    // Clear of the plaque below it, so the answer it just revealed stays
+    // readable while the coins drift up towards the counter.
+    bottom: 104,
+    alignSelf: 'center',
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    gap: 6,
+    paddingVertical: 5,
+    paddingHorizontal: 12,
+    borderRadius: 18,
+    backgroundColor: colors.parchment,
+    borderWidth: 1,
+    borderColor: '#d9ac66',
+  },
+  earnedText: {fontSize: 16, fontWeight: '700', color: colors.primaryPressed},
   plaquePin: {
     position: 'absolute',
     top: -6,
