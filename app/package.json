@@ -19,7 +19,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "build:web": "expo export --platform web --output-dir ../docs",
+    "build:web": "expo export --platform web --output-dir ../docs && node scripts/postexport.mjs",
     "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON test.mjs"
   },
   "private": true
