@@ -59,18 +59,16 @@ export function Header({roomTheme, onRoomTheme, onHelp, onBrand, offline}) {
   );
 }
 
-const baseTabs = [
+// Four destinations is all the row fits at phone width. Sharing and
+// installing moved onto the entrance hall, where there is room to name them.
+const tabs = [
+  {id: 'entrance', icon: '▤', label: 'הכניסה'},
   {id: 'gallery', icon: '▥', label: 'התערוכות'},
   {id: 'collection', icon: '▧', label: 'האוסף שלי'},
-  {id: 'share', icon: '↗', label: 'שיתוף'},
+  {id: 'shop', icon: '⌂', label: 'חנות'},
 ];
 
-// Adding the museum to the home screen is a browser affordance, so the
-// install tab only exists on the web build.
-const installTab = {id: 'install', icon: '↓', label: 'התקנה'};
-
-export function BottomNav({active, count, onTab, bottomInset, showInstall}) {
-  const tabs = showInstall ? [...baseTabs, installTab] : baseTabs;
+export function BottomNav({active, count, onTab, bottomInset}) {
   return (
     <View style={[styles.nav, {paddingBottom: 7 + bottomInset}]}>
       {tabs.map(tab => {

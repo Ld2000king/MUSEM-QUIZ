@@ -6,6 +6,19 @@ import {fileURLToPath} from 'node:url';
 import {dirname, join} from 'node:path';
 import {exhibitions, drawings, artName, kindLabel, wingLabel, WING_SIZE} from './src/data/exhibitions.js';
 import {normalize, isAnswer, validProgress, makeShare, parseSharedMuseum} from './src/logic.js';
+import {
+  balance,
+  earnedIn,
+  earnedTotal,
+  rewardFor,
+  spent,
+  PER_EXHIBIT,
+  PER_WING,
+  PER_EXHIBITION,
+  TOTAL_AVAILABLE,
+} from './src/coins.js';
+import {hallXml} from './src/components/hallArt.js';
+import {rooms, bones} from './src/theme.js';
 
 const israel = exhibitions.find(item => item.id === 'israel');
 
@@ -119,6 +132,77 @@ for (const bad of [
 }
 
 console.log('PASS: share snapshots round-trip, and malformed links are refused.');
+
+// --- coins -------------------------------------------------------------------
+// The wallet is derived from the collection, so these all follow from progress.
+
+const usa = exhibitions.find(item => item.id === 'usa');
+const none = new Set();
+const all = index => new Set(Array.from({length: index}, (_, i) => i));
+
+assert.equal(earnedIn(israel, none), 0);
+assert.equal(earnedIn(israel, new Set([0])), PER_EXHIBIT);
+// Nine rooms of a wing pay per room; the tenth also pays the wing bonus.
+assert.equal(earnedIn(israel, all(9)), 9 * PER_EXHIBIT);
+assert.equal(earnedIn(israel, all(10)), 10 * PER_EXHIBIT + PER_WING);
+assert.equal(earnedIn(israel, all(20)), 20 * PER_EXHIBIT + 2 * PER_WING);
+// A finished exhibition pays every room, every wing, and the completion bonus.
+assert.equal(earnedIn(israel, all(50)), 50 * PER_EXHIBIT + 5 * PER_WING + PER_EXHIBITION);
+assert.equal(earnedIn(usa, all(10)), 10 * PER_EXHIBIT + PER_WING + PER_EXHIBITION);
+// Rooms solved out of order still only pay the wing bonus once it is whole.
+assert.equal(earnedIn(israel, new Set([9, 4, 2])), 3 * PER_EXHIBIT);
+
+// Solving one room reports exactly what it paid, and why.
+assert.deepEqual(rewardFor(israel, none, 0), {coins: PER_EXHIBIT, reasons: []});
+assert.deepEqual(rewardFor(israel, all(9), 9), {
+  coins: PER_EXHIBIT + PER_WING,
+  reasons: ['אגף שלם'],
+});
+assert.deepEqual(rewardFor(usa, all(9), 9), {
+  coins: PER_EXHIBIT + PER_WING + PER_EXHIBITION,
+  reasons: ['התערוכה הושלמה'],
+});
+// Re-submitting a room already in the collection pays nothing.
+assert.deepEqual(rewardFor(israel, all(3), 1), {coins: 0, reasons: []});
+
+// The balance adds up across exhibitions and comes off what has been spent.
+const wallet = {version: 2, active: 'israel', categories: {israel: {solved: [0, 1], current: 2}, usa: {solved: [0], current: 1}}};
+assert.equal(earnedTotal(wallet), 3 * PER_EXHIBIT);
+assert.equal(balance(wallet), 3 * PER_EXHIBIT);
+assert.equal(balance({...wallet, spent: 5}), 3 * PER_EXHIBIT - 5);
+// A corrupt or absurd `spent` can never put the player in debt.
+assert.equal(spent({spent: -4}), 0);
+assert.equal(spent({spent: 'lots'}), 0);
+assert.equal(balance({...wallet, spent: 9999}), 0);
+// `live` counts a Set the screen holds that has not been saved yet.
+assert.equal(balance(wallet, {id: 'israel', solved: new Set([0, 1, 2])}), 4 * PER_EXHIBIT);
+
+// Clearing the whole museum pays the figure the shop quotes.
+const complete = {
+  version: 2,
+  active: 'israel',
+  categories: Object.fromEntries(
+    exhibitions.map(item => [item.id, {solved: item.levels.map((_, i) => i), current: 0}])
+  ),
+};
+assert.equal(earnedTotal(complete), TOTAL_AVAILABLE);
+assert.equal(TOTAL_AVAILABLE, 1000);
+
+console.log('PASS: coins are derived from the collection, paid once, and never negative.');
+
+// --- the entrance hall -------------------------------------------------------
+
+for (const theme of ['dark', 'light']) {
+  const xml = hallXml(rooms[theme], bones[theme]);
+  assert.ok(xml.startsWith('<svg'), `${theme}: hall is an svg`);
+  assert.ok(!xml.includes('undefined') && !xml.includes('NaN'), `${theme}: hall has no holes`);
+  // The bone colour has to differ from the wall it hangs against, or the
+  // skeletons disappear into it.
+  assert.notEqual(bones[theme].BONE.toLowerCase(), rooms[theme].wall2.toLowerCase());
+  assert.ok(xml.includes(bones[theme].BONE), `${theme}: skeletons use that theme's bone`);
+}
+
+console.log('PASS: the entrance hall draws in both wall colours.');
 
 // --- the data modules are still the originals --------------------------------
 // While the vanilla build under the repo root is still being served, the app's

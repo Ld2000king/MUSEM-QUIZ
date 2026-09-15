@@ -33,6 +33,14 @@ export const rooms = {
   },
 };
 
+// Mounted skeletons in the entrance hall: pale bone reads against the walnut
+// wall, but would disappear into the oak one, so the light room gets a sepia
+// skeleton instead.
+export const bones = {
+  dark: {BONE: '#efe8d6', BONE_SHADE: '#d8cbad', BONE_LINE: '#b3a181'},
+  light: {BONE: '#9c8259', BONE_SHADE: '#836a41', BONE_LINE: '#59462a'},
+};
+
 export const colors = {
   brass: '#8a6435',
   brassLight: '#d9ac66',

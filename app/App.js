@@ -20,7 +20,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {Header, BottomNav} from './src/components/Chrome.js';
 import {Eyebrow, Sheet, PrimaryButton, styles as ui} from './src/components/ui.js';
+import EntranceScreen from './src/screens/EntranceScreen.js';
 import LobbyScreen from './src/screens/LobbyScreen.js';
+import ShopScreen from './src/screens/ShopScreen.js';
 import GalleryScreen from './src/screens/GalleryScreen.js';
 import CollectionScreen from './src/screens/CollectionScreen.js';
 import MapModal from './src/modals/MapModal.js';
@@ -32,6 +34,8 @@ import {exhibitions, WING_SIZE} from './src/data/exhibitions.js';
 import {isAnswer, validProgress, makeShare, parseSharedMuseum} from './src/logic.js';
 import {loadState, saveState, emptyState} from './src/storage.js';
 import {watchInstallPrompt, promptInstall, canInstall} from './src/install.js';
+import {balance, rewardFor} from './src/coins.js';
+import CoinPill from './src/components/CoinPill.js';
 import {colors} from './src/theme.js';
 
 const THEME_KEY = 'cityMuseum.roomTheme';
@@ -45,7 +49,8 @@ function clearSharedHash() {
 export default function App() {
   const [state, setState] = useState(emptyState);
   const [ready, setReady] = useState(false);
-  const [view, setView] = useState('lobby'); // lobby | gallery | collection
+  // entrance | lobby | gallery | collection | shop
+  const [view, setView] = useState('entrance');
   const [exhibitionId, setExhibitionId] = useState('israel');
   const [current, setCurrent] = useState(0);
   const [solved, setSolved] = useState(() => new Set());
@@ -117,7 +122,10 @@ export default function App() {
   // keeps a backgrounded app from losing the room the player is standing in.
   useEffect(() => {
     if (!ready) return;
+    // Spread the stored state first so fields this screen does not manage —
+    // `spent`, and whatever the shop adds when it opens — survive the write.
     const next = {
+      ...state,
       version: 2,
       active: exhibitionId,
       categories: {...state.categories, [exhibitionId]: {solved: [...solved], current}},
@@ -198,28 +206,49 @@ export default function App() {
     setModal(null);
   }, []);
 
+  const showEntrance = useCallback(() => {
+    setView('entrance');
+    setModal(null);
+  }, []);
+
+  // "Carry on where I was" — the active exhibition, at the room it remembers.
+  const resumePuzzle = useCallback(() => {
+    setModal(null);
+    setAnswer('');
+    setFeedback('');
+    setFeedbackTone('');
+    setInvalid(false);
+    setView('gallery');
+  }, []);
+
   // --- playing -------------------------------------------------------------
 
   const submit = useCallback(() => {
     if (solved.has(current)) return;
     if (isAnswer(answer, level)) {
+      const reward = rewardFor(exhibition, solved, current);
       const next = new Set(solved);
       next.add(current);
       setSolved(next);
       setAnswer('');
       setInvalid(false);
       setFeedbackTone('');
+      // Phrased without a leading "+": in a right-to-left line the sign is
+      // reordered to the far side of the number and reads as "5+".
+      const earned = reward.reasons.length
+        ? ` הרווחתם ${reward.coins} מטבעות — ${reward.reasons.join(', ')}.`
+        : ` הרווחתם ${reward.coins} מטבעות.`;
       setFeedback(
-        next.size === total
+        (next.size === total
           ? `איזה אוסף! גיליתם את כל ${total} המוצגים.`
-          : `נכון, ${level.city}! המוצג נוסף לאוסף שלכם (${next.size}/${total}).`
+          : `נכון, ${level.city}! המוצג נוסף לאוסף שלכם (${next.size}/${total}).`) + earned
       );
     } else {
       setFeedbackTone('error');
       setFeedback('עוד לא. נסו שוב או בקשו רמז מהאוצר.');
       setInvalid(true);
     }
-  }, [answer, current, level, solved, total]);
+  }, [answer, current, exhibition, level, solved, total]);
 
   const showHint = useCallback(() => {
     setFeedbackTone('');
@@ -275,14 +304,24 @@ export default function App() {
 
   const onTab = useCallback(
     tab => {
-      if (tab === 'gallery') showLobby();
+      if (tab === 'entrance') showEntrance();
+      else if (tab === 'gallery') showLobby();
       else if (tab === 'collection') {
         setCollectionPage(Math.floor(current / WING_SIZE));
         setView('collection');
-      } else if (tab === 'share') shareMuseum();
-      else if (tab === 'install') openInstall();
+      } else if (tab === 'shop') {
+        setModal(null);
+        setView('shop');
+      }
     },
-    [current, openInstall, shareMuseum, showLobby]
+    [current, showEntrance, showLobby]
+  );
+
+  // The wallet is derived, so it counts the room that was just solved even
+  // before that Set has been written back into the saved state.
+  const coins = useMemo(
+    () => balance(state, {id: exhibitionId, solved}),
+    [state, exhibitionId, solved]
   );
 
   const discoveredById = useMemo(() => {
@@ -294,7 +333,8 @@ export default function App() {
     return counts;
   }, [exhibitionId, solved, state]);
 
-  const activeTab = view === 'collection' ? 'collection' : 'gallery';
+  const activeTab =
+    view === 'collection' ? 'collection' : view === 'entrance' ? 'entrance' : view === 'shop' ? 'shop' : 'gallery';
 
   if (!ready) {
     return (
@@ -312,22 +352,37 @@ export default function App() {
           roomTheme={roomTheme}
           onRoomTheme={applyRoomTheme}
           onHelp={() => setModal('help')}
-          onBrand={showLobby}
+          onBrand={showEntrance}
           offline={offline}
         />
 
         <KeyboardAvoidingView
           style={styles.main}
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-          {view !== 'lobby' ? (
+          {view === 'gallery' || view === 'collection' ? (
             <View style={styles.intro}>
-              <Eyebrow>
-                ● {exhibition.title} · VOL. 01
-              </Eyebrow>
+              <Eyebrow>● {exhibition.title} · VOL. 01</Eyebrow>
+              <CoinPill count={coins} />
             </View>
           ) : null}
 
-          {view === 'lobby' ? (
+          {view === 'entrance' ? (
+            <EntranceScreen
+              roomTheme={roomTheme}
+              coins={coins}
+              exhibition={exhibition}
+              current={current}
+              solvedCount={solved.size}
+              onEnterMuseum={showLobby}
+              onResume={resumePuzzle}
+              onShop={() => setView('shop')}
+              onShare={shareMuseum}
+              onInstall={openInstall}
+              showInstall={canInstall()}
+            />
+          ) : view === 'shop' ? (
+            <ShopScreen coins={coins} onBack={showEntrance} />
+          ) : view === 'lobby' ? (
             <LobbyScreen
               discoveredById={discoveredById}
               onEnter={enterExhibition}
@@ -378,7 +433,6 @@ export default function App() {
           count={solved.size}
           onTab={onTab}
           bottomInset={0}
-          showInstall={canInstall()}
         />
       </View>
 
@@ -441,5 +495,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.shell,
   },
   main: {flex: 1, minHeight: 0},
-  intro: {paddingHorizontal: 20, paddingVertical: 9, backgroundColor: colors.shell},
+  intro: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    backgroundColor: colors.shell,
+  },
 });
