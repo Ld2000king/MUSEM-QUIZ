@@ -3,24 +3,35 @@
 //
 // The letters sit where an Israeli keyboard puts them — left to right, the way
 // iOS and Android lay out Hebrew too, because that is the arrangement people
-// have in their fingers. Every answer in the museum is Hebrew (checked against
-// the puzzle data), and normalize() folds final letters and the geresh away,
-// so letters, a space and a backspace are the whole alphabet needed here.
-import React from 'react';
+// have in their fingers.
+//
+// No answer in the museum needs a digit (checked against the puzzle data), so
+// numbers live on a second layer behind a toggle rather than taking a row of
+// their own: the keyboard keeps exactly the same height and the room above it
+// never shifts when you switch.
+import React, {useState} from 'react';
 import {View, Text, Pressable, StyleSheet, useWindowDimensions} from 'react-native';
 import {colors} from '../theme.js';
 
-const ROWS = [
-  ['ק', 'ר', 'א', 'ט', 'ו', 'ן', 'ם', 'פ'],
-  ['ש', 'ד', 'ג', 'כ', 'ע', 'י', 'ח', 'ל', 'ך', 'ף'],
-  ['ז', 'ס', 'ב', 'ה', 'נ', 'מ', 'צ', 'ת', 'ץ'],
-];
+// Both layers are the same shape — 8 / 10 / 9 — so switching moves nothing.
+const LAYERS = {
+  letters: [
+    ['ק', 'ר', 'א', 'ט', 'ו', 'ן', 'ם', 'פ'],
+    ['ש', 'ד', 'ג', 'כ', 'ע', 'י', 'ח', 'ל', 'ך', 'ף'],
+    ['ז', 'ס', 'ב', 'ה', 'נ', 'מ', 'צ', 'ת', 'ץ'],
+  ],
+  numbers: [
+    ['1', '2', '3', '4', '5', '6', '7', '8'],
+    ['9', '0', '׳', '״', '-', '.', ',', ':', '!', '?'],
+    ['(', ')', '/', '=', '+', '%', '₪', '&', '@'],
+  ],
+};
 
-const WIDEST = Math.max(...ROWS.map(row => row.length));
+const COLUMNS = 10;
 const GAP = 4;
 const SIDE = 6;
 
-function Key({label, width, height, onPress, tone, accessibilityLabel}) {
+function Key({label, width, height, onPress, tone, accessibilityLabel, textStyle}) {
   return (
     <Pressable
       onPress={onPress}
@@ -33,19 +44,26 @@ function Key({label, width, height, onPress, tone, accessibilityLabel}) {
         tone === 'submit' && styles.keySubmit,
         pressed && styles.keyPressed,
       ]}>
-      <Text style={[styles.keyText, tone === 'submit' && styles.keyTextSubmit]}>{label}</Text>
+      <Text style={[styles.keyText, tone === 'submit' && styles.keyTextSubmit, textStyle]}>
+        {label}
+      </Text>
     </Pressable>
   );
 }
 
 export default function Keyboard({onKey, onBackspace, onSpace, onSubmit, onClose, canSubmit}) {
   const {width, height} = useWindowDimensions();
+  const [layer, setLayer] = useState('letters');
 
-  // The widest row decides the key size; everything else is measured off it so
-  // the rows stay on one line at any width the shell allows.
+  // Ten columns decide the key size; everything wider is measured in whole
+  // columns so every row lands on the same grid.
   const shell = Math.min(width, 480);
-  const keyWidth = Math.floor((shell - SIDE * 2 - GAP * (WIDEST - 1)) / WIDEST);
+  const unit = Math.floor((shell - SIDE * 2 - GAP * (COLUMNS - 1)) / COLUMNS);
   const keyHeight = height < 700 ? 38 : 44;
+  const span = n => unit * n + GAP * (n - 1);
+
+  const [topRow, ...restRows] = LAYERS[layer];
+  const numbers = layer === 'numbers';
 
   return (
     <View style={styles.board}>
@@ -60,41 +78,53 @@ export default function Keyboard({onKey, onBackspace, onSpace, onSubmit, onClose
         </Pressable>
       </View>
 
-      {ROWS.map((row, index) => (
+      {/* Backspace holds the top right corner on both layers, so it is always
+          in the same place whatever you are typing. */}
+      <View style={[styles.row, {gap: GAP}]}>
+        {topRow.map(key => (
+          <Key key={key} label={key} width={unit} height={keyHeight} onPress={() => onKey(key)} />
+        ))}
+        <Key
+          label="⌫"
+          tone="action"
+          accessibilityLabel="מחיקת אות"
+          width={span(2)}
+          height={keyHeight}
+          onPress={onBackspace}
+        />
+      </View>
+
+      {restRows.map((row, index) => (
         <View key={index} style={[styles.row, {gap: GAP}]}>
-          {row.map(letter => (
-            <Key
-              key={letter}
-              label={letter}
-              width={keyWidth}
-              height={keyHeight}
-              onPress={() => onKey(letter)}
-            />
+          {row.map(key => (
+            <Key key={key} label={key} width={unit} height={keyHeight} onPress={() => onKey(key)} />
           ))}
         </View>
       ))}
 
       <View style={[styles.row, {gap: GAP}]}>
         <Key
-          label="⌫"
+          label={numbers ? 'אבג' : '123'}
           tone="action"
-          accessibilityLabel="מחיקת אות"
-          width={keyWidth * 2 + GAP}
+          accessibilityLabel={numbers ? 'מעבר לאותיות' : 'מעבר למספרים'}
+          width={span(2)}
           height={keyHeight}
-          onPress={onBackspace}
+          textStyle={styles.keyTextSmall}
+          onPress={() => setLayer(numbers ? 'letters' : 'numbers')}
         />
         <Key
           label="רווח"
           tone="action"
-          width={keyWidth * 5 + GAP * 4}
+          width={span(5)}
           height={keyHeight}
+          textStyle={styles.keyTextSmall}
           onPress={onSpace}
         />
         <Key
           label="בדיקה"
           tone={canSubmit ? 'submit' : 'action'}
           accessibilityLabel="בדיקת התשובה"
-          width={keyWidth * 3 + GAP * 2}
+          width={span(3)}
           height={keyHeight}
           onPress={onSubmit}
         />
@@ -141,5 +171,6 @@ const styles = StyleSheet.create({
   keySubmit: {backgroundColor: colors.primary, borderColor: colors.primaryPressed},
   keyPressed: {backgroundColor: colors.brassLight},
   keyText: {fontSize: 19, color: colors.ink},
+  keyTextSmall: {fontSize: 14, fontWeight: '600', color: colors.inkSoft},
   keyTextSubmit: {color: '#fff', fontSize: 14, fontWeight: '600'},
 });
