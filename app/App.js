@@ -33,7 +33,7 @@ import ArtZoomModal from './src/modals/ArtZoomModal.js';
 import {exhibitions, WING_SIZE} from './src/data/exhibitions.js';
 import {isAnswer, validProgress, makeShare, parseSharedMuseum} from './src/logic.js';
 import {loadState, saveState, emptyState} from './src/storage.js';
-import {watchInstallPrompt, promptInstall, canInstall} from './src/install.js';
+import {watchInstallPrompt, promptInstall, canInstall, retireOldServiceWorker} from './src/install.js';
 import {balance, rewardFor} from './src/coins.js';
 import CoinPill from './src/components/CoinPill.js';
 import {colors} from './src/theme.js';
@@ -102,6 +102,7 @@ export default function App() {
   }, []);
 
   useEffect(watchInstallPrompt, []);
+  useEffect(retireOldServiceWorker, []);
 
   // The connection badge only means anything in a browser tab.
   useEffect(() => {
